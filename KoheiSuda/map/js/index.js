@@ -3,14 +3,15 @@
  */
 const getData = async () => {
     // 日本地図のデータを読み込む
-    const japanJson = await d3.json("./data/tokyo.topojson");
-    const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
-
-    return topojsonData;
+    //const japanJson = await d3.json("./data/N03-20_13_200101.geojson");
+    //const topojsonData = topojson.feature(japanJson, japanJson.objects.japan);
+    //return topojsonData;
+    const geojsonData = await d3.json("./data/N03-20_13_200101.geojson");
+    return geojsonData;
 };
 
 const createMap = async () => {
-    const topojsonData = await getData();
+    const geojsonData = await getData();
     const width = 800;
     const height = 800;
 
@@ -22,19 +23,19 @@ const createMap = async () => {
 
     const projection = d3
         .geoMercator()
-        .center([137, 38]) // 日本の中心点を指定
-        .scale(2000) // スケールを2000に設定
-        .translate([width / 2, height / 2]); // 画面の中心に移動
+        .center([139.6917, 35.6895]) // 東京の中心点を指定
+        .scale(15000) // スケールを調整
+        .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
 
     svg.selectAll("path")
-        .data(topojsonData.features)
+        .data(geojsonData.features)
         .enter()
         .append("path")
         .attr("d", path)
         .attr("fill", "lightgray")
-        .attr("stroke", "#333333")
+        .attr("stroke", "black")
         .attr("stroke-width", 0.5);
 };
 
