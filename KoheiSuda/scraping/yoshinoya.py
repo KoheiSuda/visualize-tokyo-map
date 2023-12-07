@@ -55,35 +55,6 @@ with open('yoshinoya.txt', 'w') as file:
 driver.quit()
 
 
-#from selenium import webdriver
-#from selenium.webdriver.common.by import By
-#from selenium.webdriver.chrome.service import Service
-#from webdriver_manager.chrome import ChromeDriverManager
-
-## WebDriverのセットアップ
-#driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-
-## 吉野家の東京都の店舗一覧ページのURL
-#url = 'https://stores.yoshinoya-holdings.com/yoshinoya-holdings/spot/list?c_d9=0&c_d11=0&c_d10=0&c_d12=0&category=0101.0101001.0101002.0101003.0101004&limit=30&address=13'
-
-## ページにアクセス
-#driver.get(url)
-
-## 必要な要素を取得
-#f = driver.find_element(By.ID, 'main-container')
-#f = f.find_element(By.ID, 'w_7_searchresult_1_1-widget')
-#f = f.find_element(By.ID, 'w_7_searchresult_1_1-widget-body')
-#f = f.find_element(By.ID, 'w_7_searchresult_1_1_spot-info-list-items')
-
-## 各<li>要素に対して処理を行う
-#list_items = f.find_elements(By.TAG_NAME, 'li')
-#for item in list_items:
-#    print(item.text)
-#print(len(list_items))
-
-## WebDriverを閉じる
-#driver.quit()
-
 
 ##import requests
 ##from bs4 import BeautifulSoup
