@@ -18,11 +18,17 @@
     <!-- LeafletのJavaScriptを追加 -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-      var mymap = L.map("map").setView([35.6895, 139.6917], 13);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      var mymap = L.map("map", {
+        maxBounds: [
+          [35.5, 139.5], // 東京の南西端
+          [35.9, 139.9], // 東京の北東端
+        ],
         maxZoom: 19,
-      }).addTo(mymap);
+      }).setView([35.6895, 139.6917], 16); // ズームレベルを16に変更
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        mymap
+      );
     </script>
   </body>
 </html>
