@@ -6,14 +6,54 @@ body {
 }
  */
 .tooltip {
-  position: absolute;
-  text-align: center;
-  width: 80px;
-  height: 28px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: lightsteelblue;
-  border: 0px;
-  border-radius: 8px;
-  pointer-events: none;
+    position: absolute;
+    text-align: center;
+    width: 80px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.slider {
+    position: fixed; /* 位置を固定します */
+    bottom: 70%; /* 画面の下から70%の位置に配置します */
+    left: 50%; /* 画面の左から50%の位置に配置します */
+    transform: translate(
+        -50%,
+        50%
+    ); /* X軸とY軸方向に-50%移動して、要素の中心が画面の中央に来るようにします */
+    width: 50%; /* スライダーの幅を調整します */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* デフォルトのスタイルを無効にします */
+    appearance: none;
+    width: 25px; /* つまみの幅を設定します */
+    height: 25px; /* つまみの高さを設定します */
+    background: #af4c78; /* つまみの背景色を設定します */
+    cursor: pointer; /* カーソルをポインタに変更します */
+}
+
+#timeDisplay {
+    position: fixed; /* 位置を固定します */
+    bottom: 0; /* 画面の下から0pxの位置に配置します */
+    left: 1400px; /* 画面の左から0pxの位置に配置します */
+    padding: 10px; /* パディングを追加します */
+    background-color: #fff; /* 背景色を設定します */
+    font-size: 50px; /* フォントサイズを大きくします */
+}
+#sliderContainer {
+    position: relative;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#myRange {
+    width: 80%;
 }

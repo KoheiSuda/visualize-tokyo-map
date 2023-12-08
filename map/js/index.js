@@ -6,7 +6,7 @@ const getData = async () => {
     const japanJson = await d3.json("./data/tokyo.topojson");
     const stations = await d3.csv("./data/train_data_with_coordinates.csv");
     // 店舗データを読み込む
-    const stores = await d3.csv("./data/donki_data_with_lat_lon.csv");
+    const stores = await d3.csv("./data/converted_donki_data.csv");
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
     return { topojsonData, stores, stations };
@@ -164,6 +164,61 @@ const createGraphs = (topojsonData, stores, stations) => {
         gStations.attr("transform", transform);
         gStations.attr("stroke-width", 1 / transform.k);
     }
+    // スライダーの要素を取得
+    const slider = document.getElementById("myRange");
+
+    // 時間を表示する要素を取得
+    const timeDisplay = document.getElementById("timeDisplay");
+
+    // 営業時間を解析する関数
+    function parseBusinessHours(businessHoursStr) {
+        console.log("Input:", businessHoursStr); // 入力をログに出力
+
+        const businessHoursList = businessHoursStr.split(",");
+        const result = businessHoursList.map((businessHours) => {
+            const [start, end] = businessHours.split("～").map((time) => {
+                // 余分なスペース、引用符、角括弧を削除
+                time = time.trim().replace(/['\[\]]/g, "");
+                const splitResult = time.split(":");
+                console.log("Split result:", splitResult); // 分割結果をログに出力
+                const [hour, minute] = splitResult.map(Number);
+                return hour + minute / 60;
+            });
+            return { start, end };
+        });
+
+        console.log("Output:", result); // 出力をログに出力
+
+        return result;
+    }
+
+    // スライダーの値が変更されたときに発火するイベントリスナーを設定
+    slider.addEventListener("input", function () {
+        // スライダーの現在の値を取得
+        let hour = Math.floor(this.value / 2);
+        let minute = (this.value % 2) * 30;
+
+        // 時間表示を更新
+        hour = hour.toString().padStart(2, "0");
+        minute = minute.toString().padStart(2, "0");
+        timeDisplay.textContent = `${hour}:${minute}`;
+
+        // 現在の時間を24時間制の数値に変換
+        const currentTime = Number(hour) + Number(minute) / 60;
+
+        // 各店舗が営業時間内かどうかを判断
+        g.selectAll("circle").attr("display", (d) => {
+            const businessHoursList = parseBusinessHours(d.営業時間);
+            let isWithinBusinessHours = false;
+            for (const { start, end } of businessHoursList) {
+                if (start <= currentTime && currentTime < end) {
+                    isWithinBusinessHours = true;
+                    break;
+                }
+            }
+            return isWithinBusinessHours ? null : "none";
+        });
+    });
 };
 /**
  * main 関数
