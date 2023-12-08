@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>D3 test</title>
-    <meta charset="UTF-8" />
-    <!-- LeafletのCSSを追加 -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-      #map {
-        height: 100vh;
-        width: 100%;
-      }
-    </style>
-  </head>
+    <head>
+        <title>D3 test</title>
+        <meta charset="UTF-8" />
+        <!-- LeafletのCSSを追加 -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet/dist/leaflet.css"
+        />
+        <style>
+            #map {
+                height: 100vh;
+                width: 100%;
+            }
+        </style>
+    </head>
 
-  <body>
-    <div id="map"></div>
-    <!-- LeafletのJavaScriptを追加 -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-      var mymap = L.map("map", {
-        maxBounds: [
-          [35.5, 139.5], // 東京の南西端
-          [35.9, 139.9], // 東京の北東端
-        ],
-        maxZoom: 19,
-      }).setView([35.6895, 139.6917], 16); // ズームレベルを16に変更
+    <body>
+        <div id="map"></div>
+        <!-- LeafletのJavaScriptを追加 -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+            var mymap = L.map("map", {
+                maxBounds: [
+                    [35.5, 139.5], // 東京の南西端
+                    [35.9, 139.9], // 東京の北東端
+                ],
+                maxZoom: 19,
+            }).setView([35.6895, 139.6917], 16); // ズームレベルを16に変更
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
-        mymap
-      );
-    </script>
-  </body>
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ).addTo(mymap);
+        </script>
+    </body>
 </html>
