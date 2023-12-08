@@ -4,14 +4,15 @@
 const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
+    const stations = await d3.csv("./data/train_data_with_coordinates.csv");
     // 店舗データを読み込む
     const stores = await d3.csv("./data/donki_data_with_lat_lon.csv");
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
-    return { topojsonData, stores };
+    return { topojsonData, stores, stations };
 };
 
-const createGraphs = (topojsonData, stores) => {
+const createGraphs = (topojsonData, stores, stations) => {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -101,6 +102,21 @@ const createGraphs = (topojsonData, stores) => {
             infoText.text(""); // マウスアウト時にテキストをクリア
         });
 
+    // 駅をプロットするためのg要素
+    const gStations = svg.append("g");
+
+    // 地図上に駅をプロットする
+    gStations
+        .selectAll("rect")
+        .data(stations)
+        .join("rect")
+        .attr("class", "station")
+        .attr("x", (d) => projection([+d.Latitude, +d.Longitude])[0] - 2.5) // 中心点を基準にするために調整
+        .attr("y", (d) => projection([+d.Latitude, +d.Longitude])[1] - 2.5) // 中心点を基準にするために調整
+        .attr("width", 5) // 四角形の幅
+        .attr("height", 5) // 四角形の高さ
+        .attr("fill", "green"); // 点の色
+
     window.addEventListener("resize", () => {
         width = window.innerWidth;
         height = window.innerHeight;
@@ -145,6 +161,8 @@ const createGraphs = (topojsonData, stores) => {
         const { transform } = event;
         g.attr("transform", transform);
         g.attr("stroke-width", 1 / transform.k);
+        gStations.attr("transform", transform);
+        gStations.attr("stroke-width", 1 / transform.k);
     }
 };
 /**
@@ -153,7 +171,7 @@ const createGraphs = (topojsonData, stores) => {
  */
 const main = async () => {
     // data を読み込む
-    const { topojsonData, stores } = await getData();
-    createGraphs(topojsonData, stores);
+    const { topojsonData, stores, stations } = await getData();
+    createGraphs(topojsonData, stores, stations);
 };
 main();
