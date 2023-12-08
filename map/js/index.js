@@ -51,11 +51,27 @@ const createGraphs = (topojsonData, stores) => {
     svg.call(zoom);
 
     // ツールチップのdiv要素を作成
-    const tooltip = d3
-        .select("body")
-        .append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
+    //const tooltip = d3
+    //    .select("body")
+    //    .append("div")
+    //    .attr("class", "tooltip")
+    //    .style("opacity", 0);
+
+    // 情報表示
+    const infoText = svg
+        .append("text")
+        .attr("x", 10) // 位置は必要に応じて調整
+        .attr("y", 30)
+        .attr("font-size", "20px")
+        .text("");
+
+    svg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", 100)
+        .attr("stroke", "black")
+        .attr("fill", "none");
 
     // 地図上に点をプロットする
     g.selectAll("circle")
@@ -66,16 +82,23 @@ const createGraphs = (topojsonData, stores) => {
         .attr("r", 5) // 点の半径
         .attr("fill", "blue") // 点の色
         .on("mouseover", (event, d) => {
-            // マウスオーバー時の動作
-            tooltip.transition().duration(200).style("opacity", 0.9);
-            tooltip
-                .html(d.店舗名)
-                .style("left", event.pageX + 10 + "px")
-                .style("top", event.pageY - 10 + "px");
+            const name = d.店舗名;
+            const time = d.営業時間;
+            const address = d.住所;
+            infoText.text(`店名: ${name}`);
+            infoText
+                .append("tspan")
+                .attr("x", 10)
+                .attr("dy", 30)
+                .text(`営業時間: ${time}`);
+            infoText
+                .append("tspan")
+                .attr("x", 10)
+                .attr("dy", 30)
+                .text(`住所: ${address}`);
         })
-        .on("mouseout", (d) => {
-            // マウスアウト時の動作
-            tooltip.transition().duration(500).style("opacity", 0);
+        .on("mouseout", () => {
+            infoText.text(""); // マウスアウト時にテキストをクリア
         });
 
     window.addEventListener("resize", () => {
