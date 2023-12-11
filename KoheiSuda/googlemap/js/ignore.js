@@ -16,7 +16,7 @@ function createMap(topojsonData) {
         west: 138.9,
     };
 
-    var map = new google.maps.Map(mapDiv, {
+    var map = new google.maps.Map(document.getElementById("map"), {
         zoom: 8,
         center: { lat: 35.6895, lng: 139.6917 },
         restriction: {
@@ -29,11 +29,6 @@ function createMap(topojsonData) {
         var stationLabelVisibility = zoomLevel >= 14 ? "on" : "off";
         var styles = [
             { featureType: "all", stylers: [{ visibility: "off" }] },
-            {
-                featureType: "water",
-                elementType: "geometry",
-                stylers: [{ visibility: "on" }],
-            },
             {
                 featureType: "road",
                 elementType: "geometry",
@@ -90,56 +85,41 @@ function createMap(topojsonData) {
     var overlay = new google.maps.OverlayView();
 
     overlay.onAdd = function () {
-        //オーバーレイ設定
         var layer = d3
             .select(this.getPanes().overlayLayer)
             .append("div")
-            .attr("class", "SvgOverlay");
-        var svg = layer.append("svg");
-        var container = svg.append("g").attr("class", "AdminDivisions");
-        var markerOverlay = this;
-        var overlayProjection = markerOverlay.getProjection();
+            .attr("class", "stations");
 
-        //Google Projection作成
-        var googleMapProjection = d3.geoTransform({
-            point: function (x, y) {
-                d = new google.maps.LatLng(y, x);
-                d = overlayProjection.fromLatLngToDivPixel(d);
-                this.stream.point(d.x, d.y);
-            },
-        });
-        //パスジェネレーター作成
-        var path = d3.geoPath().projection(googleMapProjection);
+        // 地図の変更を監視
         overlay.draw = function () {
-            // mapDivの現在のサイズを取得
-            var width = mapDiv.offsetWidth;
-            var height = mapDiv.offsetHeight;
+            var projection = d3
+                .geoMercator()
+                .fitSize(
+                    [mapDiv.offsetWidth, mapDiv.offsetHeight],
+                    topojsonData
+                );
+            var path = d3.geoPath().projection(projection);
 
-            // SVG要素を選択
-            var container = layer.select("svg");
-
-            // SVG要素のサイズを設定
-            container
-                .attr("width", width)
-                .attr("height", height)
+            // SVG要素を追加または取得
+            var container = d3
+                .select(this.getPanes().overlayLayer)
+                .append("div")
+                .attr("class", "stations")
                 .style("position", "absolute")
                 .style("top", "0px")
-                .style("left", "0px");
+                .style("left", "0px")
+                .append("svg");
 
-            //地図描く
+            // 地図の描画
             container
                 .selectAll("path")
                 .data(topojsonData.features)
+                .join("path")
                 .attr("d", path)
-                .enter()
-                .append("path")
-                .attr("stroke", "#333") // 境界線の色
-                .attr("stroke-width", 1) // 境界線の幅
-                .attr("fill", "none"); // 中を塗りつぶさない
+                .attr("fill", "#444");
         };
     };
 
-    //作成したSVGを地図にオーバーレイする
     overlay.setMap(map);
 }
 
