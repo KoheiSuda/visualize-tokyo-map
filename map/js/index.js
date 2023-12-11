@@ -12,6 +12,47 @@ const getData = async () => {
     return { topojsonData, stores, stations };
 };
 
+var ShopData = [
+    {
+        genre: ["ラーメン", "居酒屋", "カフェ", "スーパー", "コンビニ"],
+        color: ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231']
+    }
+];
+//以下数十行はdrawer近辺のこと
+var selection = [0,0,];
+// ジャンル選択状態を管理するオブジェクトを定義します
+var choice_genres = {};
+for(var i of ShopData[0].genre) {
+    choice_genres[i] = false;
+}
+
+// ジャンル選択ボタン
+var nav_background_color = "rgb(43, 45, 122)";
+var legRow = d3.select(".drawer-menu").selectAll("li").data(ShopData[0].genre).join("li");
+
+var container = legRow.append("div")
+    .attr("class", "checkbox_container");
+
+var checkbox = container.append("span")
+    .attr("class", "checkbox") // CSSでスタイリングするためのclass
+    .style("border", "2px solid black") // チェックボックスの枠色を黒に固定
+    .on("click", function(event, d, i) {
+        event.stopPropagation(); // 親要素にイベントが伝播するのを阻止
+        var isSelected = !choice_genres[d];
+        d3.select(this)
+            .style("background-color", isSelected ? ShopData[0].color[i]: "none"); // 選択時の背景色
+          
+        if (choice_genres[d]) {
+            choice_genres[d] = false;
+        }
+        else {
+            choice_genres[d] = true;
+        }
+    });
+
+container.append("span")
+    .attr("class", "legLabel") // クラス名を設定
+    .text(function(d) { return d; });
 
 
 const createGraphs = (topojsonData, stores, stations) => {
@@ -53,56 +94,109 @@ const createGraphs = (topojsonData, stores, stations) => {
     states.append("title").text((d) => d.properties.nam_ja);
 
     svg.call(zoom);
-
-    // ツールチップのdiv要素を作成
-    //const tooltip = d3
-    //    .select("body")
-    //    .append("div")
-    //    .attr("class", "tooltip")
-    //    .style("opacity", 0);
+    /*
+     ツールチップのdiv要素を作成
+    const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+    */
 
     // 情報表示
     const infoText = svg
         .append("text")
-        .attr("x", 10) // 位置は必要に応じて調整
-        .attr("y", 30)
+        .attr("x", window.innerWidth - 500) // 位置は必要に応じて調整
+        .attr("y", 40)
         .attr("font-size", "20px")
         .text("");
 
     svg.append("rect")
-        .attr("x", 0)
-        .attr("y", 0)
+        .attr("x", 1500)
+        .attr("y", 5)
         .attr("width", width)
         .attr("height", 100)
-        .attr("stroke", "black")
+        .attr("stroke", "none")
         .attr("fill", "none");
 
+    var currentInfoText = '';
+    var isClicked = false;
+    
     // 地図上に点をプロットする
     g.selectAll("circle")
         .data(stores)
         .join("circle")
         .attr("cx", (d) => projection([+d.Latitude, +d.Longitude])[0])
         .attr("cy", (d) => projection([+d.Latitude, +d.Longitude])[1])
-        .attr("r", 5) // 点の半径
+        .attr("r", 3) // 点の半径
         .attr("fill", "rgba(0, 0, 255, 0.2)")  // 点の色
         .on("mouseover", (event, d) => {
+            if (!d3.select(event.currentTarget).classed("clicked")) {
+                // マウスオーバー時に要素の色を赤に変更
+                d3.select(event.currentTarget).attr("fill", "white");
+            }
+            
             const name = d.店舗名;
             const time = d.営業時間;
             const address = d.住所;
+            isClicked = false;
+            currentInfoText = `店名: ${name}\n営業時間: ${time}\n住所: ${address}`; // store the current hovered text
+            
+            
+            /*
+            // 文字列を配列に変換し、joinで連結する
+            try {
+                let timeArray = JSON.parse(time);
+                time = timeArray.join(' ');
+            } catch(e) {
+                console.error(`時間の解析に失敗しました: ${time}`);
+            }
+            */
             infoText.text(`店名: ${name}`);
             infoText
                 .append("tspan")
-                .attr("x", 10)
+                .attr("x", window.innerWidth - 450)
                 .attr("dy", 30)
                 .text(`営業時間: ${time}`);
             infoText
                 .append("tspan")
-                .attr("x", 10)
+                .attr("x", window.innerWidth - 450)
                 .attr("dy", 30)
                 .text(`住所: ${address}`);
         })
         .on("mouseout", () => {
-            infoText.text(""); // マウスアウト時にテキストをクリア
+            if(!isClicked){
+                infoText.text(""); // マウスアウト時にテキストをクリア
+            }
+            if(!d3.select(event.currentTarget).classed("clicked")){
+                // マウスアウト時に要素の色を元に戻す
+                d3.select(event.currentTarget).attr("fill", "rgba(0, 0, 255, 0.2)");
+            }
+        })
+
+        .on("click", () => {
+            // すべての要素から "clicked" クラスを削除し、元の色に戻す
+            g.selectAll("circle").classed("clicked", false).attr("fill", "rgba(0, 0, 255, 0.2)");
+            // クリックされた要素に "clicked" クラスを追加し、色を白に変更
+            d3.select(event.currentTarget).classed("clicked", true).attr("fill", "white");
+            // ここにクリック時の処理を書く
+            
+            // クリックが発生した場合、マウスオーバーと同じようにinfoTextとtspan要素を設定します。
+            isClicked = true; // クリック状態を更新します
+            const info = currentInfoText.split("\n"); // 店名、営業時間、住所の各部分を配列に分割します。
+            const [name, time, address] = info; // 分割された情報を各変数に代入します。
+            infoText.text(name); // `店名: `を消去して表示します。
+            infoText
+                .append("tspan")
+                .attr("x", window.innerWidth - 450)
+                .attr("dy", 30)
+                .text(time); // `営業時間: `を消去して表示します。
+            infoText
+                .append("tspan")
+                .attr("x", window.innerWidth - 450)
+                .attr("dy", 30)
+                .text(address); // `住所: `を消去して表示します。
+            
         });
 
     // 駅をプロットするためのg要素
@@ -124,6 +218,7 @@ const createGraphs = (topojsonData, stores, stations) => {
         width = window.innerWidth;
         height = window.innerHeight;
         svg.attr("width", width).attr("height", height);
+        infoText.attr("x", window.innerWidth - 200);
     });
 
     function reset() {
@@ -214,7 +309,7 @@ const createGraphs = (topojsonData, stores, stations) => {
             minute = minute.toString().padStart(2, "0");
             return `${hour}:${minute}`;
         },
-        // ツールチップの値が変更されたときに呼び出されるイベントハンドラ
+
         // ツールチップの値が変更されたときに呼び出されるイベントハンドラ
         change: function (args) {
             // args.tooltipTextが時間形式であるかどうかをチェック
