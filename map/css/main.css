@@ -1,59 +1,90 @@
-/* CSS を当てたい場合はここに書く */
-/* Example */
-/* 
-body {
-    background-color: #f0f0f0;
-}
- */
-.tooltip {
-    position: absolute;
-    text-align: center;
-    width: 80px;
-    height: 28px;
-    padding: 2px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
+/* 店名 */
+#map text {
+    fill: black; /* 文字色を白に指定 */
+    font-family: "Arial"; /* フォントファミリーを指定 */
+    font-size: 30px; /* フォントサイズを指定 */
+    font-weight: bold; /* フォントの太さを指定 */
+    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
-.slider {
-    position: fixed; /* 位置を固定します */
-    bottom: 70%; /* 画面の下から70%の位置に配置します */
-    left: 50%; /* 画面の左から50%の位置に配置します */
-    transform: translate(
-        -50%,
-        50%
-    ); /* X軸とY軸方向に-50%移動して、要素の中心が画面の中央に来るようにします */
-    width: 50%; /* スライダーの幅を調整します */
+/* 営業時間 */
+#map text tspan:first-child {
+    fill: black; /* 文字色を黄色に指定 */
+    font-family: "Arial";
+    font-size: 15px; /* フォントサイズを指定 */
+    font-weight: normal; /* フォントの太さを指定 */
+    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* デフォルトのスタイルを無効にします */
-    appearance: none;
-    width: 25px; /* つまみの幅を設定します */
-    height: 25px; /* つまみの高さを設定します */
-    background: #af4c78; /* つまみの背景色を設定します */
-    cursor: pointer; /* カーソルをポインタに変更します */
-}
-
-#timeDisplay {
-    position: fixed; /* 位置を固定します */
-    bottom: 0; /* 画面の下から0pxの位置に配置します */
-    left: 1400px; /* 画面の左から0pxの位置に配置します */
-    padding: 10px; /* パディングを追加します */
-    background-color: #fff; /* 背景色を設定します */
-    font-size: 50px; /* フォントサイズを大きくします */
-}
-#sliderContainer {
-    position: relative;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
+/* 住所 */
+#map text tspan:last-child {
+    fill: black; /* 文字色をシアンに指定 */
+    font-family: 'Arial';
+    font-size: 15px; /* フォントサイズを指定 */
+    font-weight: normal; /* フォントの太さを指定 */
+    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
 #myRange {
-    width: 80%;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    
 }
+#myRange .rs-path-color {
+    background-color: transparent !important;
+}
+
+
+#myRange .rs-range-color {
+    background-color: transparent;
+}
+
+#myRange .rs-handle {
+    background-color: black;
+    border-radius: 0;
+}
+
+/* ベーシックなスタイル */
+li div {
+    border-radius: 5px; /* 角を丸くする */
+    padding: 10px; /* paddingを追加 */
+    color: #000000; /* テキストの色を白に */
+    font-weight: bold; /* フォントを太く */
+    text-align: center; /* テキストを中央寄せ */
+    background-size: 200% auto;
+    transition: background-position .5s, color .5s;
+}
+
+.checkbox_container {
+    display: flex; /* 要素を横並びに */
+    align-items: center; /* 子要素を中央寄せに */
+    cursor: pointer; /* カーソルをpointerに */
+}
+
+.checkbox {
+    display: flex; /* クリックエリアを広げるため */
+    align-items: right; /* 中央寄せ */
+    justify-content: center; /* 中央寄せ */
+    height: 20px; /* チェックボックスの高さ */
+    width: 20px; /* チェックボックスの幅 */
+    margin-right: 10px; /* テキストとの隙間 */
+    border: 2px solid black; /* ボーダー */
+    box-sizing: border-box; /* ボーダーを含めたサイズにする */
+}
+
+.checkbox.selected {
+    background-color: none;
+    border-color: black;
+}
+
+.checkbox_container span {
+    line-height: 20px; /* テキストの高さをチェックボックスと合わせる */
+}
+
+#infoText {
+    position: absolute;
+    right: 0;
+    top: 50%; /* これは画面の中央に配置します。必要に応じて調整してください */
+}
+

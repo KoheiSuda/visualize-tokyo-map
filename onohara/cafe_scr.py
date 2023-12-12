@@ -6,26 +6,46 @@ import time
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 
+
 class Tabelog:
-    def __init__(self, base_url, p_ward='東京都内', food_type=['ラーメン', 'つけ麺']):
+    """
+    食べログスクレイピングクラス
+    test_mode=Trueで動作させると、最初のページの３店舗のデータのみを取得できる
+    """
+    def __init__(self, base_url, test_mode=False, p_ward='東京都内', begin_page=1, end_page=400):
         
         # 変数宣言
+        self.store_id = ''
         self.store_id_num = 0
         self.store_name = ''
+        self.score = 0
         self.ward = p_ward
-        self.columns = ['genre', 'store_name', 'business_hours', 'address', 'url']  # 更新された列名
+        self.review_cnt = 0
+        self.review = ''
+        self.columns = ['store_id', 'store_name', 'business_hours', 'address', 'url']  # 更新された列名
         self.df = pd.DataFrame(columns=self.columns)
+        self.__regexcomp = re.compile(r'\n|\s') # \nは改行、\sは空白
         
-        page_num = 1 # 店舗一覧ページ番号
+        page_num = begin_page # 店舗一覧ページ番号
         
-        while True:
-            list_url = base_url + str(page_num) +  '/' 
-            if self.scrape_list(list_url, food_type=food_type) != True:
-                break
-            page_num += 1
+        if test_mode:
+            list_url = base_url + str(page_num) +  '/' #食べログの点数ランキングでソートする際に必要な処理を削除
+            # list_url = base_url + str(page_num) +  '/?Srt=D&SrtT=rt&sort_mode=1' #食べログの点数ランキングでソートする際に必要な処理
+            self.scrape_list(list_url, mode=test_mode)
+        else:
+            while True:
+                list_url = base_url + str(page_num) +  '/' #食べログの点数ランキングでソートする際に必要な処理を削除
+                # list_url = base_url + str(page_num) +  '/?Srt=D&SrtT=rt&sort_mode=1' #食べログの点数ランキングでソートする際に必要な処理
+                if self.scrape_list(list_url, mode=test_mode) != True:
+                    break
+                
+                # INパラメータまでのページ数データを取得する
+                if page_num >= end_page:
+                    break
+                page_num += 1
         return
 
-    def scrape_list(self, list_url, food_type):
+    def scrape_list(self, list_url, mode):
         """
         店舗一覧ページのパーシング
         """
@@ -38,20 +58,27 @@ class Tabelog:
 
         if len(soup_a_list) == 0:
             return False
-        
-        for soup_a in soup_a_list:
-            item_url = soup_a.get('href') # 店の個別ページURLを取得
-            self.store_id_num += 1
-            self.scrape_item(item_url,food_type)
+    
+
+        if mode:
+            for soup_a in soup_a_list[:2]:
+                item_url = soup_a.get('href') # 店の個別ページURLを取得
+                self.store_id_num += 1
+                self.scrape_item(item_url, mode)
+        else:
+            for soup_a in soup_a_list:
+                item_url = soup_a.get('href') # 店の個別ページURLを取得
+                self.store_id_num += 1
+                self.scrape_item(item_url, mode)
 
         # Check if there is a link to the next page
         next_page_link = soup.find('a', rel='next')
         if next_page_link is None:
             return False  # This is the last page
-        
+
         return True
 
-    def scrape_item(self, item_url,food_type):
+    def scrape_item(self, item_url, mode):
         """
         個別店舗情報ページのパーシング
         """
@@ -69,8 +96,9 @@ class Tabelog:
         store_head_list = store_head.find_all('dl')
         store_head_list = store_head_list[1].find_all('span')
 
-        # food_typeではない場合は処理対象外
-        if store_head_list[0].text not in food_type:
+        # ラーメンorつけ麺のお店ではない場合は処理対象外
+        if store_head_list[0].text not in {'カフェ', '喫茶店'}:
+            # print('ラーメンorつけ麺のお店ではないので処理対象外')
             self.store_id_num -= 1
             return
         
@@ -82,20 +110,13 @@ class Tabelog:
         # 営業時間と住所の取得
         soup_table = soup.find("table", class_="c-table c-table--form rstinfo-table__table")
         business_hours, address = self.get_business_hours_and_address(soup_table)
-        unwanted_time = ["営業時間・定休日は変更となる場合がございますので、ご来店前に店舗にご確認ください。"]
-        for business_hour in unwanted_time:
-            business_hours = business_hours.replace(business_hour, "").strip()
         # 住所情報のクリーニング（不要な文字列の削除）
-        # 改行文字以降を削除
-        address = re.sub("\n.*", "", address)
         unwanted_texts = ["大きな地図を見る", "周辺のお店を探す"]
         for text in unwanted_texts:
             address = address.replace(text, "").strip()
 
-        # ジャンルの取得
-        genre = food_type[0]
         # データフレームの生成
-        self.make_df(item_url, store_name, business_hours, address, genre)
+        self.make_df(item_url, store_name, business_hours, address)
         return
 
     def get_business_hours_and_address(self, soup_table):
@@ -111,9 +132,13 @@ class Tabelog:
                 address = soup_tr.td.get_text().strip()
         return business_hours, address
 
-    def make_df(self, url, store_name, business_hours, address,genre):
-        se = pd.Series([genre, store_name, business_hours, address, url], self.columns)  # 行を作成
-        self.df = self.df.append(se, ignore_index=True)  # データフレームに行を追加
+    def make_df(self, url, store_name, business_hours, address):
+        self.store_id = str(self.store_id_num).zfill(8)  # 0パディング
+        # 住所に特定の文字列が含まれていない場合のみデータフレームに追加
+        if "このお店は" not in address and "から移転しています" not in address:
+            se = pd.Series([self.store_id, store_name, business_hours, address, url], self.columns)  # 行を作成
+            self.df = self.df.append(se, ignore_index=True)  # データフレームに行を追加
+
 
 codes = [
     "C13101", "C13102", "C13103", "C13104", "C13105", "C13106", "C13107", "C13108", 
@@ -127,17 +152,6 @@ codes = [
 ]
 
 for code in codes:
-    print("https://tabelog.com/tokyo/" + code + "/rstLst/ramen/")
-    tokyo_ramen = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/ramen/",food_type=['ラーメン', 'つけ麺'])
-    tokyo_ramen.df.to_csv("data/ramen/tokyo_ramen_" + code + ".csv")
-
-for code in codes:
     print("https://tabelog.com/tokyo/" + code + "/rstLst/cafe/")
-    tokyo_cafe = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/cafe/",food_type=['カフェ', '喫茶店'])
-    tokyo_cafe.df.to_csv("data/cafe/tokyo_cafe_" + code + ".csv")
-
-# 居酒屋
-for code in codes:
-    print("https://tabelog.com/tokyo/" + code + "/rstLst/izakaya/")
-    tokyo_izakaya = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/izakaya/",food_type=['居酒屋'])
-    tokyo_izakaya.df.to_csv("data/izakaya/tokyo_izakaya_" + code + ".csv")
+    tokyo_cafe = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/cafe/",test_mode=False, p_ward='東京都内')
+    tokyo_cafe.df.to_csv("data/tokyo_cafe_" + code + ".csv")
