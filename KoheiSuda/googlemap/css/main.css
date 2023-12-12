@@ -1,0 +1,15 @@
+/* CSS を当てたい場合はここに書く */
+/* Example */
+/* 
+body {
+    background-color: #f0f0f0;
+}
+ */
+
+.SvgOverlay svg {
+    position: absolute;
+    top: -4000px;
+    left: -4000px;
+    width: 8000px;
+    height: 8000px;
+}

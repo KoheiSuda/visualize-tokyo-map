@@ -90,53 +90,56 @@ function createMap(topojsonData) {
     var overlay = new google.maps.OverlayView();
 
     overlay.onAdd = function () {
-        //オーバーレイ設定
+        // オーバーレイ設定
         var layer = d3
             .select(this.getPanes().overlayLayer)
             .append("div")
             .attr("class", "SvgOverlay");
-        var svg = layer.append("svg");
-        var container = svg.append("g").attr("class", "AdminDivisions");
+        //.style("position", "absolute")
+        //.style("top", "0px")
+        //.style("left", "0px");
+
+        // SVG要素を作成
+        this.svg = layer.append("svg");
+
         var markerOverlay = this;
         var overlayProjection = markerOverlay.getProjection();
 
-        //Google Projection作成
+        // Google Projection作成
         var googleMapProjection = d3.geoTransform({
             point: function (x, y) {
-                d = new google.maps.LatLng(y, x);
-                d = overlayProjection.fromLatLngToDivPixel(d);
-                this.stream.point(d.x, d.y);
+                d = new google.maps.LatLng(y, x); //引数で渡された緯度経度(x,y)をGoogle Maps API のLatLngオブジェクトに変換
+                d = overlayProjection.fromLatLngToDivPixel(d); //LatLngオブジェクトから画面上の座標(ピクセル)を取得
+                this.stream.point(d.x, d.y); //取得したピクセル座標を、geo streamとして渡す。
             },
         });
-        //パスジェネレーター作成
-        var path = d3.geoPath().projection(googleMapProjection);
-        overlay.draw = function () {
-            // mapDivの現在のサイズを取得
-            var width = mapDiv.offsetWidth;
-            var height = mapDiv.offsetHeight;
 
-            // SVG要素を選択
-            var container = layer.select("svg");
+        // パスジェネレーター作成
+        this.path = d3.geoPath().projection(googleMapProjection);
+    };
 
-            // SVG要素のサイズを設定
-            container
-                .attr("width", width)
-                .attr("height", height)
-                .style("position", "absolute")
-                .style("top", "0px")
-                .style("left", "0px");
+    overlay.draw = function () {
+        // mapDivの現在のサイズを取得
+        var width = mapDiv.offsetWidth;
+        var height = mapDiv.offsetHeight;
 
-            //地図描く
-            container
-                .selectAll("path")
-                .data(topojsonData.features)
-                .attr("d", path)
-                .enter()
-                .append("path")
-                .attr("stroke", "#333") // 境界線の色
-                .attr("stroke-width", 1) // 境界線の幅
-                .attr("fill", "none"); // 中を塗りつぶさない
-        };
+        // SVG要素のサイズを設定
+        this.svg
+            .attr("width", width)
+            .attr("height", height)
+            .style("position", "absolute")
+            .style("top", "0px")
+            .style("left", "0px");
+
+        // 地図描く
+        this.svg
+            .selectAll("path")
+            .data(topojsonData.features)
+            .join("path")
+            .attr("d", this.path)
+            .attr("stroke", "#333") // 境界線の色
+            .attr("stroke-width", 1) // 境界線の幅
+            .attr("fill", "none"); // 中を塗りつぶさない
     };
 
     //作成したSVGを地図にオーバーレイする
