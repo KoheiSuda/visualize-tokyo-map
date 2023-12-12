@@ -3,10 +3,10 @@
  */
 const getData = async () => {
     // 日本地図のデータを読み込む
-    //const japanJson = await d3.json("./data/N03-20_13_200101.geojson");
+    //const japanJson = await d3.json("./data/tokyo.topojson");
     //const topojsonData = topojson.feature(japanJson, japanJson.objects.japan);
     //return topojsonData;
-    const geojsonData = await d3.json("./data/N03-20_13_200101.geojson");
+    const geojsonData = await d3.json("./data/tokyo.geojson");
     return geojsonData;
 };
 
