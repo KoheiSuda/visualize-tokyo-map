@@ -4,7 +4,7 @@ import urllib
 import re
 
 # CSVファイルの読み込み
-file_path = 'ramen.csv'  # ここにCSVファイルのパスを入力してください
+file_path = 'cafe.csv'  # ここにCSVファイルのパスを入力してください
 df = pd.read_csv(file_path)
 
 # 住所から緯度経度を取得する関数
@@ -39,5 +39,5 @@ df['Latitude'], df['Longitude'] = zip(*df['Coordinates'])
 df.drop('Coordinates', axis=1, inplace=True)
 
 # 結果を新しいCSVファイルに保存
-output_file_path = 'ramen_with_lat_lon.csv'
+output_file_path = 'cafe_with_lat_lon.csv'
 df.to_csv(output_file_path, index=False)

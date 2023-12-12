@@ -21,26 +21,7 @@
     </head>
 
     <body>
-        <div class="drawer drawer--left" id="Legends">
-          <header role="banner">
-              <button type="button" class="drawer-toggle drawer-hamburger">
-                  <span class="sr-only">toggle navigation</span>
-                  <span class="drawer-hamburger-icon"></span>
-              </button>
-      
-              <nav class="drawer-nav" role="navigation">
-                  <ul class="drawer-menu">
-                    <li><a class="drawer-brand" href="#">店駅時間分布</a></li>
-                  </ul>
-              </nav>
-          </header>
-          
-          <script>
-              $(document).ready(function () {
-                  $('.drawer').drawer();
-              });
-          </script>
-        </div>
+        
         
         <div id="map" style="width: 800px; height: 400px"></div>
         <svg id="infoText"></svg>
@@ -57,5 +38,26 @@
             charset="utf-8"
         ></script>
         <script type="text/javascript" src="./js/map.js"></script>
+
+        <div class="drawer drawer--left" id="Legends">
+            <header role="banner">
+                <button type="button" class="drawer-toggle drawer-hamburger">
+                    <span class="sr-only">toggle navigation</span>
+                    <span class="drawer-hamburger-icon"></span>
+                </button>
+        
+                <nav class="drawer-nav" role="navigation">
+                    <ul class="drawer-menu">
+                      <li><a class="drawer-brand" href="#">店駅時間分布</a></li>
+                    </ul>
+                </nav>
+            </header>
+            
+            <script>
+                $(document).ready(function () {
+                    $('.drawer').drawer();
+                });
+            </script>
+          </div>
     </body>
 </html>
