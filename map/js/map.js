@@ -10,17 +10,6 @@ const getData = async () => {
     return { topojsonData, stores, stations };
 };
 
-function style(feature) {
-    return {
-        fillColor: "none", // 中身の塗りつぶしをなしに
-        weight: 2, // 境界線の太さ
-        opacity: 1, // 境界線の不透明度
-        color: "red", // 境界線の色
-        fillOpacity: 0, // 塗りつぶしの不透明度を0に（塗りつぶしなし）
-        dashArray: "5, 5", // 点線のパターン（点の長さ、間隔の長さ）
-    };
-}
-
 function createMap(topojsonData) {
     // 制限された範囲を定義
     var southWest = L.latLng(35.5, 138.9);
@@ -40,8 +29,99 @@ function createMap(topojsonData) {
         attribution: "© Gravitystorm",
     }).addTo(map);
 
-    // GeoJSON データを地図に追加
-    L.geoJson(topojsonData, { style: style }).addTo(map);
+    // 地図の全体を覆う大きな矩形を定義
+    var outerBounds = [
+        [-90, -180],
+        [90, 180],
+    ]; // 緯度と経度の最大範囲
+
+    // 大きな矩形のスタイルを設定
+    var outerStyle = {
+        fillColor: "white", // 白色で塗りつぶし
+        fillOpacity: 0.9, // 不透明度
+        stroke: false, // 境界線なし
+    };
+
+    // 枠線レイヤーを作成
+    var borderLayer = L.geoJson(topojsonData, {
+        fill: false,
+        weight: 1,
+        color: "black",
+        fillOpacity: 0,
+    });
+
+    // 大きな矩形を地図に追加（変数で参照可能にする）
+    var largeRect = L.rectangle(outerBounds, outerStyle).addTo(map);
+
+    // 枠線を描画
+    L.geoJson(topojsonData, {
+        // 境界線のスタイル設定
+        style: function (feature) {
+            return {
+                weight: 1,
+                color: "black",
+                fillOpacity: 0,
+            };
+        },
+        // 境界線にクリックイベントハンドラを追加
+        onEachFeature: function (feature, layer) {
+            layer.on("click", function () {
+                // クリックされた市区町村の領域にズーム
+                map.fitBounds(layer.getBounds());
+                // 白い覆いを地図から削除
+                //if (largeRect) {
+                //    largeRect.remove();
+                //}
+            });
+        },
+    }).addTo(map);
+
+    // 枠線を地図に追加
+    borderLayer.addTo(map);
+
+    // ズームレベルに基づいて大きな矩形を表示/非表示し、
+    // 境界線レイヤーを再配置する関数
+    function toggleLargeRectAndRedrawBorder() {
+        var thresholdZoom = 14;
+        var currentZoom = map.getZoom();
+
+        //if (currentZoom > thresholdZoom) {
+        //    largeRect.remove();
+        //} else {
+        //    largeRect.addTo(map);
+        //}
+
+        // 境界線レイヤーを再配置
+        borderLayer.remove();
+        borderLayer.addTo(map);
+    }
+
+    // zoomend イベントに関数をバインド
+    map.on("zoomend", toggleLargeRectAndRedrawBorder);
+
+    // 初期状態の設定
+    toggleLargeRectAndRedrawBorder(); // ズームレベルに基づいて大きな矩形を表示/非表示し、
+    // 境界線レイヤーを再配置する関数
+    function toggleLargeRectAndRedrawBorder() {
+        var thresholdZoom = 12;
+        var currentZoom = map.getZoom();
+
+        if (currentZoom > thresholdZoom) {
+            largeRect.remove();
+        } else {
+            largeRect.addTo(map);
+        }
+
+        // 境界線レイヤーを再配置
+        borderLayer.remove();
+        borderLayer.addTo(map);
+    }
+
+    // zoomend イベントに関数をバインド
+    map.on("zoomend", toggleLargeRectAndRedrawBorder);
+
+    // 初期状態の設定
+    toggleLargeRectAndRedrawBorder();
 }
 
 const main = async () => {
