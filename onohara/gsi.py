@@ -4,7 +4,7 @@ import urllib
 import re
 
 # CSVファイルの読み込み
-file_path = 'donki_data.csv'  # ここにCSVファイルのパスを入力してください
+file_path = 'ramen.csv'  # ここにCSVファイルのパスを入力してください
 df = pd.read_csv(file_path)
 
 # 住所から緯度経度を取得する関数
@@ -27,7 +27,7 @@ def clean_address(address):
     return cleaned_address
 
 # Apply the function to clean addresses in the dataframe
-df['Cleaned_Address'] = df['住所'].apply(clean_address)
+df['Cleaned_Address'] = df['address'].apply(clean_address)
 
 # 各住所に関数を適用
 df['Coordinates'] = df['Cleaned_Address'].apply(address_to_lat_lon)
@@ -39,5 +39,5 @@ df['Latitude'], df['Longitude'] = zip(*df['Coordinates'])
 df.drop('Coordinates', axis=1, inplace=True)
 
 # 結果を新しいCSVファイルに保存
-output_file_path = 'donki_data_with_lat_lon.csv'
+output_file_path = 'ramen_with_lat_lon.csv'
 df.to_csv(output_file_path, index=False)
