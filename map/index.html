@@ -3,8 +3,13 @@
     <head>
         <title>D3 test</title>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="css/sanitize.css" />
         <link rel="stylesheet" href="css/main.css" />
+        <!-- LeafletのCSSを追加 -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <!-- LeafletのJavaScriptを追加 -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <!-- drawer.css -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
         <!-- jquery & iScroll -->
@@ -37,7 +42,7 @@
           </script>
         </div>
         
-        <div id="map"></div>
+        <div id="map" style="width: 800px; height: 400px"></div>
         <svg id="infoText"></svg>
         
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/roundSlider/1.3/roundslider.min.css">
@@ -51,7 +56,6 @@
             src="./js/topojson.js"
             charset="utf-8"
         ></script>
-        <script type="text/javascript" src="./js/index.js"></script>
-        <script type="text/javascript" src="./js/drawer.js"></script>
+        <script type="text/javascript" src="./js/map.js"></script>
     </body>
 </html>

@@ -46,6 +46,6 @@ function createMap(topojsonData) {
 
 const main = async () => {
     const { topojsonData, stores, stations } = await getData();
-    createGraphs(topojsonData, stores, stations);
+    createMap(topojsonData);
 };
 main();
