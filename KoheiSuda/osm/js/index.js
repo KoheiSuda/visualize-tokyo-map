@@ -1,9 +1,13 @@
 const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
+    const stations = await d3.csv("./data/train_data_with_coordinates.csv");
+
+    // 店舗データを読み込む
+    const stores = await d3.csv("./data/converted_donki_data.csv");
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
-    return topojsonData;
+    return { topojsonData, stores, stations };
 };
 
 function style(feature) {
@@ -41,8 +45,7 @@ function createMap(topojsonData) {
 }
 
 const main = async () => {
-    const topojsonData = await getData();
-    createMap(topojsonData);
+    const { topojsonData, stores, stations } = await getData();
+    createGraphs(topojsonData, stores, stations);
 };
-
 main();
