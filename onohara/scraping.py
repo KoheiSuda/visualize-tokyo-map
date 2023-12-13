@@ -125,27 +125,18 @@ codes = [
     "C13227", "C13228", "C13229", 
     "C13303", "C13305", "C13307", "C13308"
 ]
-codes1 = [
-    "C13122", "C13123", 
-    "C13201", "C13202", "C13203", "C13204", "C13205", "C13206", "C13207", "C13208", 
-    "C13209", "C13210", "C13211", "C13212", "C13213", "C13214", "C13215", 
-    "C13218", "C13219", "C13220", "C13221", "C13222", "C13223", "C13224", "C13225", 
-    "C13227", "C13228", "C13229", 
-    "C13303", "C13305", "C13307", "C13308"
-]
 
-# for code in codes:
-#     print("https://tabelog.com/tokyo/" + code + "/rstLst/ramen/")
-#     tokyo_ramen = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/ramen/",food_type=['ラーメン', 'つけ麺'])
-#     tokyo_ramen.df.to_csv("data/ramen/tokyo_ramen_" + code + ".csv")
+for code in codes:
+    print("https://tabelog.com/tokyo/" + code + "/rstLst/ramen/")
+    tokyo_ramen = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/ramen/",food_type=['ラーメン', 'つけ麺'])
+    tokyo_ramen.df.to_csv("data/ramen/tokyo_ramen_" + code + ".csv")
 
-# for code in codes:
-#     print("https://tabelog.com/tokyo/" + code + "/rstLst/cafe/")
-#     tokyo_cafe = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/cafe/",food_type=['カフェ', '喫茶店'])
-#     tokyo_cafe.df.to_csv("data/cafe/tokyo_cafe_" + code + ".csv")
+for code in codes:
+    print("https://tabelog.com/tokyo/" + code + "/rstLst/cafe/")
+    tokyo_cafe = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/cafe/",food_type=['カフェ', '喫茶店'])
+    tokyo_cafe.df.to_csv("data/cafe/tokyo_cafe_" + code + ".csv")
 
-# 居酒屋
-for code in codes1:
+for code in codes:
     print("https://tabelog.com/tokyo/" + code + "/rstLst/izakaya/")
     tokyo_izakaya = Tabelog(base_url="https://tabelog.com/tokyo/" + code + "/rstLst/izakaya/",food_type=['居酒屋'])
     tokyo_izakaya.df.to_csv("data/izakaya/tokyo_izakaya_" + code + ".csv")
