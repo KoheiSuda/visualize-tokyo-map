@@ -52,10 +52,19 @@ const createMap = (topojsonData, stores, stations) => {
         .join("circle")
         .attr("cx", (d) => projection([+d.Latitude, +d.Longitude])[0])
         .attr("cy", (d) => projection([+d.Latitude, +d.Longitude])[1])
-        .attr("r", 3) // 点の半径
-        .attr("fill", "rgba(255, 255, 0, 0.2)"); // 点の色
+        .attr("r", 1) // 点の半径
+        .attr("fill", "rgba(255, 255, 0, 1)"); // 点の色
 
     sliderclock(g);
+
+    // zoomイベントハンドラを作成
+    const zoomed = (event) => {
+        g.attr("transform", event.transform);
+    };
+    // zoom機能を初期化
+    const zoom = d3.zoom().on("zoom", zoomed);
+    // SVG要素にzoomイベントハンドラを適用
+    svg.call(zoom);
 };
 
 export { getData };

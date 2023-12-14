@@ -86,14 +86,14 @@ li div {
     top: 50%; /* これは画面の中央に配置します。必要に応じて調整してください */
 }
 
-.drawer {
-    z-index: 100000000000000000000000000000000000000000000000000000000;
-}
-
 #container {
     display: flex;
 }
 #map,
 #sliderContainer {
     display: inline-block;
+}
+
+#map {
+    transform-origin: center;
 }
