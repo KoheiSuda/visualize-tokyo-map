@@ -72,8 +72,9 @@ li div {
 }
 
 .checkbox.selected {
-    background-color: none;
     border-color: black;
+    /* 背景色を追加 */
+    background-color: inherit;
 }
 
 .checkbox_container span {

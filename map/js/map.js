@@ -1,4 +1,5 @@
 import { sliderclock } from "./clock.js";
+import { genre } from "./genre.js";
 
 const getData = async () => {
     // 日本地図のデータを読み込む
@@ -56,6 +57,7 @@ const createMap = (topojsonData, stores, stations) => {
         .attr("fill", "rgba(255, 255, 0, 0.2)"); // 点の色
 
     sliderclock(g);
+    genre(g);
 };
 
 export { getData };
