@@ -13,7 +13,7 @@ const getData = async () => {
 };
 
 const mapping_stations = (stations, g, projection) => {
-    g.selectAll("station")
+    g.selectAll("stations")
         .data(stations)
         .join("circle")
         .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
