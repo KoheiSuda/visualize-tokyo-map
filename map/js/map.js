@@ -28,7 +28,7 @@ const createMap = (topojsonData, stores, stations) => {
         .geoMercator()
         .center([139.4917, 35.6895])
         .translate([width / 2, height / 2])
-        .scale(40000);
+        .scale(80000);
 
     const path = d3.geoPath().projection(projection);
 

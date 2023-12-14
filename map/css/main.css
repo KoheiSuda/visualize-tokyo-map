@@ -4,7 +4,7 @@
     font-family: "Arial"; /* フォントファミリーを指定 */
     font-size: 30px; /* フォントサイズを指定 */
     font-weight: bold; /* フォントの太さを指定 */
-    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
+    background-color: rgba(0, 0, 0, 0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
 /* 営業時間 */
@@ -13,28 +13,26 @@
     font-family: "Arial";
     font-size: 15px; /* フォントサイズを指定 */
     font-weight: normal; /* フォントの太さを指定 */
-    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
+    background-color: rgba(0, 0, 0, 0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
 /* 住所 */
 #map text tspan:last-child {
     fill: black; /* 文字色をシアンに指定 */
-    font-family: 'Arial';
+    font-family: "Arial";
     font-size: 15px; /* フォントサイズを指定 */
     font-weight: normal; /* フォントの太さを指定 */
-    background-color: rgba(0,0,0,0.6); /* 背景色を指定 (透明度0.6の黒) */
+    background-color: rgba(0, 0, 0, 0.6); /* 背景色を指定 (透明度0.6の黒) */
 }
 
 #myRange {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    
 }
 #myRange .rs-path-color {
     background-color: transparent !important;
 }
-
 
 #myRange .rs-range-color {
     background-color: transparent;
@@ -53,7 +51,7 @@ li div {
     font-weight: bold; /* フォントを太く */
     text-align: center; /* テキストを中央寄せ */
     background-size: 200% auto;
-    transition: background-position .5s, color .5s;
+    transition: background-position 0.5s, color 0.5s;
 }
 
 .checkbox_container {
@@ -90,4 +88,12 @@ li div {
 
 .drawer {
     z-index: 100000000000000000000000000000000000000000000000000000000;
+}
+
+#container {
+    display: flex;
+}
+#map,
+#sliderContainer {
+    display: inline-block;
 }
