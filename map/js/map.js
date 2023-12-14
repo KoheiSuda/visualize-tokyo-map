@@ -1,4 +1,4 @@
-import { clock } from "./clock.js";
+import { sliderclock } from "./clock.js";
 
 const getData = async () => {
     // 日本地図のデータを読み込む
@@ -48,7 +48,7 @@ const createMap = (topojsonData, stores, stations) => {
         .geoMercator()
         .center([139.4917, 35.6895])
         .translate([width / 2, height / 2])
-        .scale(40000);
+        .scale(80000);
 
     const path = d3.geoPath().projection(projection);
 
@@ -80,7 +80,7 @@ const createMap = (topojsonData, stores, stations) => {
     // 地図上に点をプロットする
     mapping_stores(stores, g, projection);
 
-    clock(g);
+    sliderclock(g);
 };
 
 export { getData };

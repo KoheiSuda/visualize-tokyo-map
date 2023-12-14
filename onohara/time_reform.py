@@ -3,7 +3,7 @@ import re
 import ast
 
 # CSVファイルを読み込む
-with open('reform_ramen.csv', 'r') as f:
+with open('reform_izakaya.csv', 'r') as f:
     reader = csv.reader(f)
     data = list(reader)
 
@@ -44,6 +44,6 @@ for row in data:
     new_data.append(row)
 
 # 結果を新しいCSVファイルに書き出す
-with open('new_reform_ramen.csv', 'w', newline='') as f:
+with open('new_reform_izakaya.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerows(new_data)
