@@ -3,13 +3,33 @@ import { clock } from "./clock.js";
 const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
-    const stations = await d3.csv("./data/train_data_with_coordinates.csv");
+    const stations = await d3.csv("./data/tokyo_station.csv");
 
     // 店舗データを読み込む
     const stores = await d3.csv("./data/ramen_updated.csv");
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
     return { topojsonData, stores, stations };
+};
+
+const mapping_stations = (stations, g, projection) => {
+    g.selectAll("station")
+        .data(stations)
+        .join("circle")
+        .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
+        .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
+        .attr("r", 3) // Adjust the radius as needed
+        .attr("fill", "blue"); // Choose a color that stands out
+};
+
+const mapping_stores = (stores, g, projection) => {
+    g.selectAll("stores")
+        .data(stores)
+        .join("circle")
+        .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
+        .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
+        .attr("r", 1) // 点の半径
+        .attr("fill", "rgba(255, 255, 0, 1)"); // 点の色
 };
 
 const createMap = (topojsonData, stores, stations) => {
@@ -34,26 +54,31 @@ const createMap = (topojsonData, stores, stations) => {
 
     const g = svg.append("g");
 
+    const map_color = "#444";
+
     const states = g
         .append("g")
-        .attr("fill", "#777")
+        .attr("fill", map_color)
         .attr("opacity", 0.5)
         .attr("cursor", "pointer")
         .selectAll("path")
         .data(topojsonData.features)
         .join("path")
-        .attr("d", path);
+        .attr("d", path)
+        .on("mouseover", function (event, d) {
+            d3.select(this).attr("fill", "red");
+        })
+        .on("mouseout", function () {
+            d3.select(this).attr("fill", map_color);
+        });
 
     states.append("title").text((d) => d.properties.nam_ja);
 
+    // 駅をプロットする
+    mapping_stations(stations, g, projection);
+
     // 地図上に点をプロットする
-    g.selectAll("circle")
-        .data(stores)
-        .join("circle")
-        .attr("cx", (d) => projection([+d.Latitude, +d.Longitude])[0])
-        .attr("cy", (d) => projection([+d.Latitude, +d.Longitude])[1])
-        .attr("r", 3) // 点の半径
-        .attr("fill", "rgba(255, 255, 0, 0.2)"); // 点の色
+    mapping_stores(stores, g, projection);
 
     clock(g);
 };
