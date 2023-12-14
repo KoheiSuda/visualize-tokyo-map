@@ -45,7 +45,7 @@ function sliderclock(g) {
         const currentTime = Number(hour) + Number(minute) / 60;
 
         // 各店舗が営業時間内かどうかを判断
-        g.selectAll("stores").attr("display", (d) => {
+        g.selectAll("circle.store").attr("display", (d) => {
             const businessHoursList = parseBusinessHours(
                 d[daysOfWeek[currentDayIndex]]
             ); //ここをボタンで変更したい

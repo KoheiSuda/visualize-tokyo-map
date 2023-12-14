@@ -14,7 +14,7 @@ const getData = async () => {
 };
 
 const mapping_stations = (stations, g, projection) => {
-    g.selectAll("stations")
+    g.selectAll("circle.station")
         .data(stations)
         .join("circle")
         .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
@@ -24,9 +24,10 @@ const mapping_stations = (stations, g, projection) => {
 };
 
 const mapping_stores = (stores, g, projection) => {
-    g.selectAll("stores")
+    g.selectAll("circle.store")
         .data(stores)
         .join("circle")
+        .attr("class", "store") // クラス名を追加
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
         .attr("r", 1) // 点の半径
