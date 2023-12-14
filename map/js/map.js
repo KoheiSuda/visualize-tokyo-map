@@ -1,3 +1,4 @@
+import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre } from "./genre.js";
 
@@ -5,36 +6,36 @@ const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
     const stations = await d3.csv("./data/tokyo_station.csv");
+    const station_lines = await d3.csv("./data/tokyo_join.csv");
 
     // 店舗データを読み込む
     const stores = await d3.csv("./data/ramen_updated.csv");
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
-    return { topojsonData, stores, stations };
+    return { topojsonData, stores, stations, station_lines };
 };
 
-const mapping_stations = (stations, g, projection) => {
-    g.selectAll("circle.station")
-        .data(stations)
-        .join("circle")
-        .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
-        .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
-        .attr("r", 3) // Adjust the radius as needed
-        .attr("fill", "blue"); // Choose a color that stands out
-};
+//const mapping_stations = (stations, station_lines, g, projection) => {
+//    g.selectAll("circle.station")
+//        .data(stations)
+//        .join("circle")
+//        .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
+//        .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
+//        .attr("r", 3) // Adjust the radius as needed
+//        .attr("fill", "blue"); // Choose a color that stands out
+//};
 
 const mapping_stores = (stores, g, projection) => {
     g.selectAll("circle.store")
         .data(stores)
         .join("circle")
-        .attr("class", "store") // クラス名を追加
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
         .attr("r", 1) // 点の半径
         .attr("fill", "rgba(255, 255, 0, 1)"); // 点の色
 };
 
-const createMap = (topojsonData, stores, stations) => {
+const createMap = (topojsonData, stores, stations, station_lines) => {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -77,7 +78,7 @@ const createMap = (topojsonData, stores, stations) => {
     states.append("title").text((d) => d.properties.nam_ja);
 
     // 駅をプロットする
-    mapping_stations(stations, g, projection);
+    mapping_stations(stations, station_lines, g, projection);
 
     // 地図上に点をプロットする
     mapping_stores(stores, g, projection);
