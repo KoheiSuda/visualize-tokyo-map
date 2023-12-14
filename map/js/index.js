@@ -15,48 +15,54 @@ const getData = async () => {
 var ShopData = [
     {
         genre: ["ラーメン", "居酒屋", "カフェ", "スーパー", "コンビニ"],
-        color: ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231']
-    }
+        color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
+    },
 ];
 //以下数十行はdrawer近辺のこと
-var selection = [0,0,];
+var selection = [0, 0];
 // ジャンル選択状態を管理するオブジェクトを定義します
 var choice_genres = {};
-for(var i of ShopData[0].genre) {
+for (var i of ShopData[0].genre) {
     choice_genres[i] = false;
 }
 
 // ジャンル選択ボタン
 var nav_background_color = "rgb(43, 45, 122)";
-var legRow = d3.select(".drawer-menu").selectAll("li").data(ShopData[0].genre).join("li");
+var legRow = d3
+    .select(".drawer-menu")
+    .selectAll("li")
+    .data(ShopData[0].genre)
+    .join("li");
 
-var container = legRow.append("div")
-    .attr("class", "checkbox_container");
+var container = legRow.append("div").attr("class", "checkbox_container");
 
-var checkbox = container.append("span")
+var checkbox = container
+    .append("span")
     .attr("class", "checkbox") // CSSでスタイリングするためのclass
     .style("border", "2px solid black") // チェックボックスの枠色を黒に固定
-    .on("click", function(event, d, i) {
+    .on("click", function (event, d, i) {
         event.stopPropagation(); // 親要素にイベントが伝播するのを阻止
         var isSelected = !choice_genres[d];
-        d3.select(this)
-            .style("background-color", isSelected ? ShopData[0].color[i]: "none"); // 選択時の背景色
-          
+        d3.select(this).style(
+            "background-color",
+            isSelected ? ShopData[0].color[i] : "none"
+        ); // 選択時の背景色
+
         if (choice_genres[d]) {
             choice_genres[d] = false;
-        }
-        else {
+        } else {
             choice_genres[d] = true;
         }
     });
 
-container.append("span")
+container
+    .append("span")
     .attr("class", "legLabel") // クラス名を設定
-    .text(function(d) { return d; });
-
+    .text(function (d) {
+        return d;
+    });
 
 const createGraphs = (topojsonData, stores, stations) => {
-    
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -119,9 +125,9 @@ const createGraphs = (topojsonData, stores, stations) => {
         .attr("stroke", "none")
         .attr("fill", "none");
 
-    var currentInfoText = '';
+    var currentInfoText = "";
     var isClicked = false;
-    
+
     // 地図上に点をプロットする
     g.selectAll("circle")
         .data(stores)
@@ -129,20 +135,19 @@ const createGraphs = (topojsonData, stores, stations) => {
         .attr("cx", (d) => projection([+d.Latitude, +d.Longitude])[0])
         .attr("cy", (d) => projection([+d.Latitude, +d.Longitude])[1])
         .attr("r", 3) // 点の半径
-        .attr("fill", "rgba(0, 0, 255, 0.2)")  // 点の色
+        .attr("fill", "rgba(0, 0, 255, 0.2)") // 点の色
         .on("mouseover", (event, d) => {
             if (!d3.select(event.currentTarget).classed("clicked")) {
                 // マウスオーバー時に要素の色を赤に変更
                 d3.select(event.currentTarget).attr("fill", "white");
             }
-            
+
             const name = d.店舗名;
             const time = d.営業時間;
             const address = d.住所;
             isClicked = false;
             currentInfoText = `店名: ${name}\n営業時間: ${time}\n住所: ${address}`; // store the current hovered text
-            
-            
+
             /*
             // 文字列を配列に変換し、joinで連結する
             try {
@@ -165,22 +170,29 @@ const createGraphs = (topojsonData, stores, stations) => {
                 .text(`住所: ${address}`);
         })
         .on("mouseout", () => {
-            if(!isClicked){
+            if (!isClicked) {
                 infoText.text(""); // マウスアウト時にテキストをクリア
             }
-            if(!d3.select(event.currentTarget).classed("clicked")){
+            if (!d3.select(event.currentTarget).classed("clicked")) {
                 // マウスアウト時に要素の色を元に戻す
-                d3.select(event.currentTarget).attr("fill", "rgba(0, 0, 255, 0.2)");
+                d3.select(event.currentTarget).attr(
+                    "fill",
+                    "rgba(0, 0, 255, 0.2)"
+                );
             }
         })
 
         .on("click", () => {
             // すべての要素から "clicked" クラスを削除し、元の色に戻す
-            g.selectAll("circle").classed("clicked", false).attr("fill", "rgba(0, 0, 255, 0.2)");
+            g.selectAll("circle")
+                .classed("clicked", false)
+                .attr("fill", "rgba(0, 0, 255, 0.2)");
             // クリックされた要素に "clicked" クラスを追加し、色を白に変更
-            d3.select(event.currentTarget).classed("clicked", true).attr("fill", "white");
+            d3.select(event.currentTarget)
+                .classed("clicked", true)
+                .attr("fill", "white");
             // ここにクリック時の処理を書く
-            
+
             // クリックが発生した場合、マウスオーバーと同じようにinfoTextとtspan要素を設定します。
             isClicked = true; // クリック状態を更新します
             const info = currentInfoText.split("\n"); // 店名、営業時間、住所の各部分を配列に分割します。
@@ -196,7 +208,6 @@ const createGraphs = (topojsonData, stores, stations) => {
                 .attr("x", window.innerWidth - 450)
                 .attr("dy", 30)
                 .text(address); // `住所: `を消去して表示します。
-            
         });
 
     // 駅をプロットするためのg要素
@@ -264,28 +275,22 @@ const createGraphs = (topojsonData, stores, stations) => {
     }
     // スライダーの要素を取得
 
-
     // 時間を表示する要素を取得
     const timeDisplay = document.getElementById("timeDisplay");
 
     // 営業時間を解析する関数
     function parseBusinessHours(businessHoursStr) {
-        console.log("Input:", businessHoursStr); // 入力をログに出力
-
         const businessHoursList = businessHoursStr.split(",");
         const result = businessHoursList.map((businessHours) => {
-            const [start, end] = businessHours.split("～").map((time) => {
+            const [start, end] = businessHours.split("~").map((time) => {
                 // 余分なスペース、引用符、角括弧を削除
                 time = time.trim().replace(/['\[\]]/g, "");
                 const splitResult = time.split(":");
-                console.log("Split result:", splitResult); // 分割結果をログに出力
                 const [hour, minute] = splitResult.map(Number);
                 return hour + minute / 60;
             });
             return { start, end };
         });
-
-        console.log("Output:", result); // 出力をログに出力
 
         return result;
     }
@@ -343,7 +348,7 @@ const createGraphs = (topojsonData, stores, stations) => {
                 }
                 return isWithinBusinessHours ? null : "none";
             });
-        }
+        },
     });
 
     // スライダーの初期化
@@ -352,11 +357,11 @@ const createGraphs = (topojsonData, stores, stations) => {
     // 自動再生ボタンの作成
     let autoPlayButton = document.createElement("button");
     autoPlayButton.innerHTML = "Auto Play";
-    autoPlayButton.onclick = function() {
+    autoPlayButton.onclick = function () {
         // 1分ごとにスライダーの値を更新
-        let intervalId = setInterval(function() {
+        let intervalId = setInterval(function () {
             let currentValue = slider.getValue();
-            if(currentValue >= 47) {
+            if (currentValue >= 47) {
                 // スライダーの値が最大に達したら、自動再生を停止
                 clearInterval(intervalId);
             } else {
@@ -371,8 +376,6 @@ const createGraphs = (topojsonData, stores, stations) => {
     // ボタンをページに追加
     document.body.appendChild(autoPlayButton);
 };
-
-
 
 /**
  * main 関数
