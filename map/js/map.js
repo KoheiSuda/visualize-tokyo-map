@@ -1,5 +1,5 @@
 import { sliderclock } from "./clock.js";
-import { genre } from "./genre.js";
+import { genre, shopData } from "./genre.js";
 
 const getData = async () => {
     // 日本地図のデータを読み込む
@@ -7,7 +7,13 @@ const getData = async () => {
     const stations = await d3.csv("./data/tokyo_station.csv");
 
     // 店舗データを読み込む
-    const stores = await d3.csv("./data/ramen_updated.csv");
+    const ramen = await d3.csv("./data/ramen_updated.csv");
+    const izakaya = await d3.csv("./data/izakaya_updated.csv");
+    //const cafe = await d3.csv("./data/cafe_updated.csv");
+
+    // 店舗データを結合する
+    const stores = ramen.concat(izakaya);//.concat(cafe);
+
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
     return { topojsonData, stores, stations };
@@ -23,9 +29,12 @@ const mapping_stations = (stations, g, projection) => {
         .attr("fill", "blue"); // Choose a color that stands out
 };
 
-const mapping_stores = (stores, g, projection) => {
+export const mapping_stores = (stores, g, projection, choice_genres) => {
+
+    const filteredStores = stores.filter((store) => choice_genres[store.genre]);
+
     g.selectAll("circle.store")
-        .data(stores)
+        .data(filteredStores)
         .join("circle")
         .attr("class", "store") // クラス名を追加
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
@@ -80,7 +89,7 @@ const createMap = (topojsonData, stores, stations) => {
     mapping_stations(stations, g, projection);
 
     // 地図上に点をプロットする
-    mapping_stores(stores, g, projection);
+    mapping_stores(stores, g, projection, {});
 
     sliderclock(g);
     genre(g);

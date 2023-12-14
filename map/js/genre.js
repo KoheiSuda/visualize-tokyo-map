@@ -1,20 +1,23 @@
+import { mapping_stores } from './map.js';
+
+export var shopData = [
+    {
+        genre: ["ラーメン", "居酒屋", "カフェ", "スーパー", "コンビニ"],
+        color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
+    },
+];
 function genre() {
-    var ShopData = [
-        {
-            genre: ["ラーメン", "居酒屋", "カフェ", "スーパー", "コンビニ"],
-            color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
-        },
-    ];
+    
 
     // ジャンルと色をマッピング
     var genreColorMap = {};
-    for (var i = 0; i < ShopData[0].genre.length; i++) {
-        genreColorMap[ShopData[0].genre[i]] = ShopData[0].color[i];
+    for (var i = 0; i < shopData[0].genre.length; i++) {
+        genreColorMap[shopData[0].genre[i]] = shopData[0].color[i];
     }
 
     // ジャンル選択状態を管理するオブジェクトを定義します
     var choice_genres = {};
-    for (var i of ShopData[0].genre) {
+    for (var i of shopData[0].genre) {
         choice_genres[i] = false;
     }
 
@@ -22,7 +25,7 @@ function genre() {
     var legRow = d3
         .select("#checkboxContainer") 
         .selectAll("div")
-        .data(ShopData[0].genre)
+        .data(shopData[0].genre)
         .join("div"); 
 
     var container = legRow.append("div").attr("class", "checkbox_container");
@@ -44,6 +47,8 @@ function genre() {
                 .classed("selected", false)
                 .style("background-color", "white"); // 色を白に戻す
         }
+        // 地図上の店舗を更新
+        mapping_stores(stores, g, projection, choice_genres);
     });
 
     container
