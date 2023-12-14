@@ -1,28 +1,10 @@
 import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
+import {stores} from "./main.js";
 
-let stores;
 let g;
 let projection;
-
-const getData = async () => {
-    // 日本地図のデータを読み込む
-    const japanJson = await d3.json("./data/tokyo.topojson");
-    const stations = await d3.csv("./data/tokyo_station.csv");
-
-    // 店舗データを読み込む
-    const ramen = await d3.csv("./data/ramen_updated.csv");
-    const izakaya = await d3.csv("./data/izakaya_updated.csv");
-    //const cafe = await d3.csv("./data/cafe_updated.csv");
-
-    // 店舗データを結合する
-    const stores = ramen.concat(izakaya); //.concat(cafe);
-
-    const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
-
-    return { topojsonData, stores, stations };
-};
 
 // Create a color mapping function
 const colorScale = d3
@@ -30,18 +12,23 @@ const colorScale = d3
     .domain(shopData[0].genre)
     .range(shopData[0].color);
 
-const mapping_stores = (stores, g, projection, choice_genres) => {
-    const filteredStores = stores.filter((store) => choice_genres[store.genre]);
-    console.log(filteredStores);
-
-    g.selectAll("circle.store")
-        .data(filteredStores)
-        .join("circle")
-        .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
-        .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
-        .attr("r", 1) // 点の半径
-        .attr("fill", (d) => colorScale(d.genre)); // 点の色
-};
+    const mapping_stores = (stores, g, projection, choice_genres) => {
+        const filteredStores = stores.filter((store) => choice_genres[store.genre]);
+    
+        const circles = g.selectAll("circle.store")
+            .data(filteredStores, d => d.id); // Assuming each store has a unique 'id' property
+    
+        circles.enter()
+            .append("circle")
+            .attr("class", "store")
+            .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
+            .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
+            .attr("r", 1) // 点の半径
+            .attr("fill", (d) => colorScale(d.genre)) // 点の色
+            .merge(circles); // For updating existing circles if needed
+    
+        circles.exit().remove(); // Remove circles that are no longer in the data
+    };
 
 const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     let width = window.innerWidth;
@@ -104,4 +91,4 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     svg.call(zoom);
 };
 
-export { getData, createMap, stores, mapping_stores, g, projection };
+export { createMap, stores, mapping_stores, g, projection };

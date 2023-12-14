@@ -1,8 +1,9 @@
 // main.js
 
 import { createMap } from "./map.js";
-import { genre, shopData } from "./genre.js";
+import { shopData } from "./genre.js";
 
+let stores;
 const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
@@ -15,7 +16,7 @@ const getData = async () => {
     //const cafe = await d3.csv("./data/cafe_updated.csv");
 
     // 店舗データを結合する
-    const stores = ramen.concat(izakaya); //.concat(cafe);
+    stores = ramen.concat(izakaya); //.concat(cafe);
 
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
@@ -28,3 +29,5 @@ const main = async () => {
 };
 
 main();
+
+export { stores};
