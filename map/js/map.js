@@ -1,6 +1,10 @@
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
 
+let stores;
+let g;
+let projection;
+
 const getData = async () => {
     // 日本地図のデータを読み込む
     const japanJson = await d3.json("./data/tokyo.topojson");
@@ -12,7 +16,7 @@ const getData = async () => {
     //const cafe = await d3.csv("./data/cafe_updated.csv");
 
     // 店舗データを結合する
-    const stores = ramen.concat(izakaya);//.concat(cafe);
+    stores = ramen.concat(izakaya);//.concat(cafe);
 
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
@@ -29,9 +33,10 @@ const mapping_stations = (stations, g, projection) => {
         .attr("fill", "blue"); // Choose a color that stands out
 };
 
-export const mapping_stores = (stores, g, projection, choice_genres) => {
+const mapping_stores = (stores, g, projection, choice_genres) => {
 
     const filteredStores = stores.filter((store) => choice_genres[store.genre]);
+    console.log(filteredStores);
 
     g.selectAll("circle.store")
         .data(filteredStores)
@@ -55,7 +60,7 @@ const createMap = (topojsonData, stores, stations) => {
         .attr("height", height)
         .attr("style", "max-width: 100%; height: auto;");
 
-    const projection = d3
+    projection = d3
         .geoMercator()
         .center([139.4917, 35.6895])
         .translate([width / 2, height / 2])
@@ -63,7 +68,7 @@ const createMap = (topojsonData, stores, stations) => {
 
     const path = d3.geoPath().projection(projection);
 
-    const g = svg.append("g");
+    g = svg.append("g");
 
     const map_color = "#444";
 
@@ -95,5 +100,4 @@ const createMap = (topojsonData, stores, stations) => {
     genre(g);
 };
 
-export { getData };
-export { createMap };
+export { getData, createMap, stores, mapping_stores, g, projection };
