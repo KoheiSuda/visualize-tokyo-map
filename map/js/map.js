@@ -2,32 +2,11 @@ import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre } from "./genre.js";
 
-const getData = async () => {
-    // 日本地図のデータを読み込む
-    const japanJson = await d3.json("./data/tokyo.topojson");
-    const stations = await d3.csv("./data/tokyo_station.csv");
-    const station_lines = await d3.csv("./data/tokyo_join.csv");
+export const mapping_stores = (stores, g, projection, choice_genres) => {
+    const filteredStores = stores.filter((store) => choice_genres[store.genre]);
 
-    // 店舗データを読み込む
-    const stores = await d3.csv("./data/ramen_updated.csv");
-    const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
-
-    return { topojsonData, stores, stations, station_lines };
-};
-
-//const mapping_stations = (stations, station_lines, g, projection) => {
-//    g.selectAll("circle.station")
-//        .data(stations)
-//        .join("circle")
-//        .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
-//        .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
-//        .attr("r", 3) // Adjust the radius as needed
-//        .attr("fill", "blue"); // Choose a color that stands out
-//};
-
-const mapping_stores = (stores, g, projection) => {
     g.selectAll("circle.store")
-        .data(stores)
+        .data(filteredStores)
         .join("circle")
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
@@ -35,7 +14,7 @@ const mapping_stores = (stores, g, projection) => {
         .attr("fill", "rgba(255, 255, 0, 1)"); // 点の色
 };
 
-const createMap = (topojsonData, stores, stations, station_lines) => {
+const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -81,11 +60,10 @@ const createMap = (topojsonData, stores, stations, station_lines) => {
     mapping_stations(stations, station_lines, g, projection);
 
     // 地図上に点をプロットする
-    mapping_stores(stores, g, projection);
+    mapping_stores(stores, g, projection, {});
 
     sliderclock(g);
     genre(g);
 };
 
-export { getData };
 export { createMap };
