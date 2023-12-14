@@ -1,4 +1,4 @@
-import { mapping_stores } from "./map.js";
+import { mapping_stores, stores, g, projection } from "./map.js";
 
 export var shopData = [
     {
