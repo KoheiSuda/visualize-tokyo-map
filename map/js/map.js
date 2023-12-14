@@ -1,4 +1,4 @@
-import { clock } from "./clock.js";
+import { sliderclock } from "./clock.js";
 
 const getData = async () => {
     // 日本地図のデータを読み込む
@@ -55,7 +55,7 @@ const createMap = (topojsonData, stores, stations) => {
         .attr("r", 3) // 点の半径
         .attr("fill", "rgba(255, 255, 0, 0.2)"); // 点の色
 
-    clock(g);
+    sliderclock(g);
 };
 
 export { getData };
