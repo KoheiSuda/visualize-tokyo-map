@@ -2,7 +2,7 @@ import { mapping_stores, stores, g, projection } from "./map.js";
 
 export var shopData = [
     {
-        genre: ["ラーメン", "居酒屋", "カフェ", "スーパー", "コンビニ"],
+        genre: ["ラーメン", "居酒屋", "カフェ", "クリニック", "ガソリンスタンド"],
         color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
     },
 ];
