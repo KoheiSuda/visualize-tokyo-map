@@ -53,7 +53,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("viewBox", [0, 0, width, height])
         .attr("width", width)
         .attr("height", height)
-        .attr("style", "max-width: 100%; height: auto;");
+        .attr("style", "max-width: 100%; height: 900px;"); // 900にしてるの適当すぎるかも
 
     projection = d3
         .geoMercator()
@@ -93,6 +93,15 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
 
     sliderclock(g);
     genre(g);
+
+    // zoomイベントハンドラを作成
+    const zoomed = (event) => {
+        g.attr("transform", event.transform);
+    };
+    // zoom機能を初期化
+    const zoom = d3.zoom().on("zoom", zoomed);
+    // SVG要素にzoomイベントハンドラを適用
+    svg.call(zoom);
 };
 
 export { getData, createMap, stores, mapping_stores, g, projection };

@@ -111,4 +111,3 @@ function sliderclock(g) {
 }
 
 export { sliderclock };
-
