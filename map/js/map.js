@@ -33,6 +33,11 @@ const mapping_stations = (stations, g, projection) => {
         .attr("fill", "blue"); // Choose a color that stands out
 };
 
+// Create a color mapping function
+const colorScale = d3.scaleOrdinal()
+    .domain(shopData[0].genre)
+    .range(shopData[0].color);
+
 const mapping_stores = (stores, g, projection, choice_genres) => {
 
     const filteredStores = stores.filter((store) => choice_genres[store.genre]);
@@ -45,7 +50,7 @@ const mapping_stores = (stores, g, projection, choice_genres) => {
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
         .attr("r", 1) // 点の半径
-        .attr("fill", "rgba(255, 255, 0, 1)"); // 点の色
+        .attr("fill", (d) => colorScale(d.genre)); // 点の色
 };
 
 const createMap = (topojsonData, stores, stations) => {
