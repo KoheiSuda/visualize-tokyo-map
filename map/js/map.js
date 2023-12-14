@@ -1,4 +1,5 @@
 import { sliderclock } from "./clock.js";
+import { genre } from "./genre.js";
 
 const getData = async () => {
     // 日本地図のデータを読み込む
@@ -81,6 +82,7 @@ const createMap = (topojsonData, stores, stations) => {
     mapping_stores(stores, g, projection);
 
     sliderclock(g);
+    genre(g);
 };
 
 export { getData };
