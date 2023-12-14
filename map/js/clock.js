@@ -222,7 +222,6 @@ function sliderclock(g) {
             let minute = (args.value % 2) * 30;
             hour = hour.toString().padStart(2, "0");
             minute = minute.toString().padStart(2, "0");
-            const currentTime = Number(hour) + Number(minute) / 60;
             return `${hour}:${minute}`;
         },
 
@@ -250,7 +249,7 @@ function sliderclock(g) {
 
             // 各店舗が営業時間内かどうかを判断
             g.selectAll("circle").attr("display", (d) => {
-                const businessHoursList = parseBusinessHours(d.営業時間);
+                const businessHoursList = parseBusinessHours(d.Tuesday);//ここをボタンで変更したい
                 let isWithinBusinessHours = false;
                 for (const { start, end } of businessHoursList) {
                     if (start <= currentTime && currentTime < end) {
