@@ -89,7 +89,7 @@ function sliderclock(g) {
         // 100msごとにスライダーの値を更新
         autoPlayIntervalId = setInterval(function () {
             let currentValue = slider.getValue();
-            console.log(currentValue);
+            //console.log(currentValue);
             if (currentValue >= 47) {
                 currentValue = 0;
                 slider.setValue(currentValue + 1);
@@ -109,5 +109,4 @@ function sliderclock(g) {
         }
     };
 }
-
 export { sliderclock };

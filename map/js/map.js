@@ -2,6 +2,7 @@ import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
 import { stores } from "./main.js";
+import { analogTime } from "./analog.js";
 
 let g;
 let projection;
@@ -49,7 +50,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .geoMercator()
         .center([139.4917, 35.6895])
         .translate([width / 2, height / 2])
-        .scale(80000);
+        .scale(60000);
 
     const path = d3.geoPath().projection(projection);
 
@@ -83,6 +84,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
 
     sliderclock(g);
     genre(g);
+    //analogTime(g);
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {
