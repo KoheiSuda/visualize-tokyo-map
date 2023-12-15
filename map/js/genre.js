@@ -1,11 +1,12 @@
-import { mapping_stores, stores, g, projection } from "./map.js";
-
+import { mapping_stores, g, projection } from "./map.js";
+import {stores} from "./main.js";
 export var shopData = [
     {
         genre: ["ラーメン", "居酒屋", "カフェ", "クリニック", "ガソリンスタンド"],
         color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
     },
 ];
+let choice_genres = {};
 function genre() {
     // ジャンルと色をマッピング
     var genreColorMap = {};
@@ -14,7 +15,6 @@ function genre() {
     }
 
     // ジャンル選択状態を管理するオブジェクトを定義します
-    var choice_genres = {};
     for (var i of shopData[0].genre) {
         choice_genres[i] = false;
     }
@@ -47,6 +47,7 @@ function genre() {
             }
             // 地図上の店舗を更新
             mapping_stores(stores, g, projection, choice_genres);
+            console.log(stores);
         });
 
     container

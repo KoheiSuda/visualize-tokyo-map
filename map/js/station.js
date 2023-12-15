@@ -23,27 +23,57 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         28008: "#8f76d6", // 半蔵門線
         28009: "#00ac9b", // 南北線
     };
-
-    g.selectAll("circle.station")
+    // Bind data for stations
+    const stationSquares = g
+        .selectAll("rect.station")
         .data(stations)
-        .join("circle")
-        .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
-        .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
-        .attr("r", 3) // Adjust the radius as needed
-        .attr("fill", "white"); // Choose a color that stands out
+        .enter()
+        .append("rect")
+        //.attr("class", "station")
+        .attr("x", (d) => projection([+d.lon, +d.lat])[0] - 2)
+        .attr("y", (d) => projection([+d.lon, +d.lat])[1] - 2)
+        .attr("width", 4) // Adjust the size as needed
+        .attr("height", 4) // Adjust the size as needed
+        .attr("fill", "none") // No fill color
+        .attr("opacity", 0.5) // Start with opacity 0
+        .attr("stroke", "white") // Choose a color that stands out
+        .attr("stroke-width", 1) // Adjust the stroke width as needed
+        //.attr("r", 2) // End with radius 3
+        .attr("visibility", "hidden"); // Start hidden
 
-    // Draw lines
-    g.selectAll("line.station")
+    // Bind data for lines
+    const stationLines = g
+        .selectAll("line.station")
         .data(station_lines)
         .enter()
         .append("line")
+        //.attr("class", "station-line")
         .attr("x1", (d) => projection(stationCoords.get(d.station_cd1))[0])
         .attr("y1", (d) => projection(stationCoords.get(d.station_cd1))[1])
         .attr("x2", (d) => projection(stationCoords.get(d.station_cd2))[0])
         .attr("y2", (d) => projection(stationCoords.get(d.station_cd2))[1])
+        //.attr("stroke-width", 0) // Start with stroke-width 0
+        //.attr("opacity", 0) // Start with opacity 0
+        //.transition() // Start a transition
+        //.duration(1000) // Last for 1 second
         .attr("stroke", (d) => customColors[d.line_cd] || "black") // Default to black if line_cd is not in customColors
-        .attr("stroke-width", 2)
-        .attr("opacity", 0.8);
+        .attr("stroke-width", 2) // End with stroke-width 2
+        .attr("opacity", 0.3) // End with opacity 0.8
+        .attr("visibility", "hidden"); // Start hidden
+
+    let stationsVisible = false;
+    // Click event handler
+    document.getElementById("show-stations").addEventListener("click", () => {
+        stationsVisible = !stationsVisible;
+
+        if (stationsVisible) {
+            stationSquares.attr("visibility", "visible");
+            stationLines.attr("visibility", "visible");
+        } else {
+            stationSquares.attr("visibility", "hidden");
+            stationLines.attr("visibility", "hidden");
+        }
+    });
 };
 
 export { mapping_stations };
