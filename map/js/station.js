@@ -30,7 +30,7 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .attr("cx", (d) => projection([+d.lon, +d.lat])[0])
         .attr("cy", (d) => projection([+d.lon, +d.lat])[1])
         .attr("r", 3) // Adjust the radius as needed
-        .attr("fill", "blue"); // Choose a color that stands out
+        .attr("fill", "white"); // Choose a color that stands out
 
     // Draw lines
     g.selectAll("line.station")
