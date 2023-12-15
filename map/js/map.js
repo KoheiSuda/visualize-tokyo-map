@@ -89,7 +89,14 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         g.attr("transform", event.transform);
     };
     // zoom機能を初期化
-    const zoom = d3.zoom().on("zoom", zoomed);
+    const zoom = d3
+        .zoom()
+        .scaleExtent([1, 8])
+        .translateExtent([
+            [0, 0],
+            [width, height],
+        ])
+        .on("zoom", zoomed);
     // SVG要素にzoomイベントハンドラを適用
     svg.call(zoom);
 };
