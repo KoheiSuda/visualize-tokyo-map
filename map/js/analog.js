@@ -1,6 +1,9 @@
+var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+var margin = 0; // マージンを0に設定
+var clockRadius = viewportWidth / 10; // ビューポートの幅と高さの小さい方の半分に設定
 var radians = 0.0174532925,
-    clockRadius = 135,
-    margin = 50,
+    // clockRadius = 135,
+    // margin = 50,
     width = (clockRadius + margin) * 2,
     height = (clockRadius + margin) * 2,
     hourHandLength = (2 * clockRadius) / 3,
@@ -25,8 +28,9 @@ var handData = [
 function drawClock() {
     //create all the clock elements
     updateData(); //draw them in the correct starting position
+
     var svg = d3
-        .select("body")
+        .select("#clock")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
