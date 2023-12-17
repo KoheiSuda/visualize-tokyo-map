@@ -1,0 +1,49 @@
+/* svg {
+    stroke: #000;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+        Helvetica, Arial, "Lucida Grande", sans-serif;
+} */
+
+#rim {
+    fill: none;
+    stroke: #999;
+    stroke-width: 3px;
+}
+
+.hour-hand {
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke: black;
+}
+
+.hands-cover {
+    stroke-width: 3;
+    fill: #fff;
+    stroke: black;
+}
+
+.second-tick {
+    stroke-width: 3;
+    stroke: black;
+}
+
+.hour-tick {
+    stroke-width: 8;
+    stroke: black;
+}
+
+.second-label {
+    font-size: 12px;
+    stroke: black;
+}
+
+.hour-label {
+    font-size: 24px;
+    stroke: black;
+}
+
+#clock-svg {
+    position: fixed;
+    right: 0;
+    top: 0;
+}

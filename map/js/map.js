@@ -94,7 +94,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     // 地図上に点をプロットする
     mapping_stores(stores, g, projection, {});
 
-    sliderclock(g);
+    //sliderclock(g);
     genre(g);
 
     // zoomイベントハンドラを作成

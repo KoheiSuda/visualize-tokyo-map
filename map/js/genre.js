@@ -1,8 +1,14 @@
 import { mapping_stores, g, projection } from "./map.js";
-import {stores} from "./main.js";
+import { stores } from "./main.js";
 export var shopData = [
     {
-        genre: ["ラーメン", "居酒屋", "カフェ", "クリニック", "ガソリンスタンド"],
+        genre: [
+            "ラーメン",
+            "居酒屋",
+            "カフェ",
+            "クリニック",
+            "ガソリンスタンド",
+        ],
         color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
     },
 ];
@@ -47,7 +53,7 @@ function genre() {
             }
             // 地図上の店舗を更新
             mapping_stores(stores, g, projection, choice_genres);
-            console.log(stores);
+            //console.log(stores);
         });
 
     container
