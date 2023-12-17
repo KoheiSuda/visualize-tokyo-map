@@ -43,7 +43,36 @@
 }
 
 #clock-svg {
-    position: fixed;
+    /* position: fixed; */
     right: 0;
     top: 0;
+}
+
+.play {
+    color: black;
+}
+
+.stop {
+    color: black;
+}
+
+#autoplay-button {
+    border: none;
+    background-color: transparent;
+    font-size: 30px;
+    cursor: pointer;
+    width: 60px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed */
+    border-radius: 50%; /* Make the button round */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#autoplay-button.play::before {
+    content: "▶";
+}
+
+#autoplay-button.stop::before {
+    content: "||";
 }
