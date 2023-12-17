@@ -35,7 +35,7 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .attr("width", 4) // Adjust the size as needed
         .attr("height", 4) // Adjust the size as needed
         .attr("fill", "none") // No fill color
-        .attr("opacity", 0.5) // Start with opacity 0
+        .attr("opacity", 0.3) // Start with opacity 0
         .attr("stroke", "white") // Choose a color that stands out
         .attr("stroke-width", 1) // Adjust the stroke width as needed
         //.attr("r", 2) // End with radius 3
@@ -58,7 +58,7 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         //.duration(1000) // Last for 1 second
         .attr("stroke", (d) => customColors[d.line_cd] || "black") // Default to black if line_cd is not in customColors
         .attr("stroke-width", 2) // End with stroke-width 2
-        .attr("opacity", 0.3) // End with opacity 0.8
+        .attr("opacity", 0.2) // End with opacity 0.8
         .attr("visibility", "hidden"); // Start hidden
 
     let stationsVisible = false;
