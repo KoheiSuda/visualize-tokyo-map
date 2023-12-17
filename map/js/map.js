@@ -2,6 +2,7 @@ import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
 import { stores } from "./main.js";
+import { detail_map } from "./detail_map.js";
 
 let g;
 let projection;
@@ -43,19 +44,27 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("viewBox", [0, 0, width, height])
         .attr("width", width)
         .attr("height", height)
-        .attr("style", "max-width: 100%; height: 900px;"); // 900にしてるの適当すぎるかも
+        .attr("style", "max-width: 100%; max-height: 100%;");
 
     projection = d3
         .geoMercator()
-        .center([139.4917, 35.6895])
+        .center([139.4, 35.6895])
         .translate([width / 2, height / 2])
-        .scale(80000);
+        .scale(60000);
 
     const path = d3.geoPath().projection(projection);
 
     g = svg.append("g");
 
     const map_color = "#444";
+
+    // Add a text element to the SVG
+    var nameDisplay = svg
+        .append("text")
+        .attr("x", 100) // Adjust as needed
+        .attr("y", 100) // Adjust as needed
+        .attr("text-anchor", "end") // Right align the text
+        .text("");
 
     const states = g
         .append("g")
@@ -68,9 +77,13 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("d", path)
         .on("mouseover", function (event, d) {
             d3.select(this).attr("fill", "red");
+            nameDisplay.text(d.properties.nam_ja); // Update the text
         })
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);
+        })
+        .on("click", function (event, d) {
+            detail_map(d);
         });
 
     states.append("title").text((d) => d.properties.nam_ja);
