@@ -61,9 +61,7 @@ function drawClock() {
         .attr("transform", function (d) {
             return "rotate(" + secondScale(d) + ")";
         });
-    //and labels
 
-    //... and hours
     face.selectAll(".hour-tick")
         .data(d3.range(0, 12))
         .enter()
@@ -75,6 +73,19 @@ function drawClock() {
         .attr("y2", hourTickStart + hourTickLength)
         .attr("transform", function (d) {
             return "rotate(" + hourScale(d) + ")";
+        })
+        .on("click", function (event, d) {
+            // クリックされた時刻に針を移動
+            handData[0].value = d + 6;
+            console.log(d);
+            currentTime = d + (count % 2) * 12;
+            moveHands();
+            analogTime(
+                d3.selectAll("circle.store"),
+                currentTime,
+                currentDayIndex,
+                count
+            );
         });
 
     face.selectAll(".hour-label")
@@ -131,7 +142,9 @@ function moveHands() {
     d3.select("#clock-hands")
         .selectAll("line")
         .data(handData)
-        //.transition()
+        .transition() // Add this line
+        .ease(d3.easeLinear) // Add this line
+        .duration(300) // Add this line
         .attr("transform", function (d) {
             return "rotate(" + d.scale(d.value) + ")";
         });
@@ -145,8 +158,6 @@ function updateData() {
 drawClock();
 
 d3.select(self.frameElement).style("height", height + "px");
-
-// ここまで時計の描画部分
 
 // 何回0時になったかをカウントして午前午後を判定
 var count = 0;
@@ -165,7 +176,7 @@ const daysOfWeek = [
 
 let currentDayIndex = 0; // 0 = Sunday
 
-function analogTime(g, currentTime, currentDayIndex) {
+function analogTime(g, currentTime, currentDayIndex, count) {
     function parseBusinessHours(businessHoursStr) {
         const businessHoursList = businessHoursStr.split(",");
         const result = businessHoursList.map((businessHours) => {
@@ -221,6 +232,49 @@ var drag = d3.drag().on("drag", function (event, d) {
     }
     currentTime = d.value + (count % 2) * 12;
     moveHands();
-    analogTime(d3.selectAll("circle.store"), currentTime, currentDayIndex);
+    analogTime(
+        d3.selectAll("circle.store"),
+        currentTime,
+        currentDayIndex,
+        count
+    );
 });
 d3.select(".hour-hand").call(drag);
+
+var autoplay = null;
+
+function startAutoPlay() {
+    var button = document.getElementById("autoplay-button"); // Get the button by its ID
+    if (autoplay) {
+        stopAutoPlay();
+        button.classList.remove("stop"); // Remove the 'stop' class
+        button.classList.add("play"); // Add the 'play' class
+    } else {
+        autoplay = setInterval(function () {
+            handData[0].value += 0.5; // Increase the time by 0.5 hours
+            if (handData[0].value >= 12) {
+                handData[0].value = 0; // Reset the time to 0 if it's 12 or more
+                count += 1; // Increase the count for AM/PM
+                if (count % 2 === 0) {
+                    currentDayIndex = (currentDayIndex + 1) % 7; // Increase the day index
+                }
+            }
+            currentTime = handData[0].value + (count % 2) * 12;
+            moveHands();
+            analogTime(
+                d3.selectAll("circle.store"),
+                currentTime,
+                currentDayIndex,
+                count
+            );
+        }, 300);
+        button.classList.remove("play"); // Remove the 'play' class
+        button.classList.add("stop"); // Add the 'stop' class
+    }
+}
+function stopAutoPlay() {
+    if (autoplay) {
+        clearInterval(autoplay);
+        autoplay = null;
+    }
+}

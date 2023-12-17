@@ -6,7 +6,7 @@ import { detail_map } from "./detail_map.js";
 
 let g;
 let projection;
-const scale = Math.min(window.innerWidth, window.innerHeight) * 250;
+const scale = Math.min(window.innerWidth, window.innerHeight) * 100;
 
 // Create a color mapping function
 const colorScale = d3
@@ -45,7 +45,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("viewBox", [0, 0, width, height])
         .attr("width", width)
         .attr("height", height)
-        .attr("style", "max-width: 100%; max-height: 100%;");
+        .attr("style", "max-width: 100%; height: ${window.innerHeight}px;"); // 900にしてるの適当すぎるかも
 
     projection = d3
         .geoMercator()
