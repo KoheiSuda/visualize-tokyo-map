@@ -2,7 +2,6 @@ import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
 import { stores } from "./main.js";
-import { analogTime } from "./analog.js";
 
 let g;
 let projection;
@@ -82,9 +81,8 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     // 地図上に点をプロットする
     mapping_stores(stores, g, projection, {});
 
-    sliderclock(g);
+    //sliderclock(g);
     genre(g);
-    //analogTime(g);
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {

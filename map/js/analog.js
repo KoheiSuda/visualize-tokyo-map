@@ -142,10 +142,65 @@ drawClock();
 
 d3.select(self.frameElement).style("height", height + "px");
 
+// ここまで時計の描画部分
+
 // 何回0時になったかをカウントして午前午後を判定
 var count = 0;
 let tmp;
 let currentTime;
+
+const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+];
+
+let currentDayIndex = 0; // 0 = Sunday
+
+function analogTime(g, currentTime, currentDayIndex) {
+    function parseBusinessHours(businessHoursStr) {
+        const businessHoursList = businessHoursStr.split(",");
+        const result = businessHoursList.map((businessHours) => {
+            const [start, end] = businessHours.split("~").map((time) => {
+                // 余分なスペース、引用符、角括弧を削除
+                time = time.trim().replace(/['\[\]]/g, "");
+                const splitResult = time.split(":");
+                const [hour, minute] = splitResult.map(Number);
+                return hour + minute / 60;
+            });
+            return { start, end };
+        });
+
+        return result;
+    }
+    function mod(i, j) {
+        // あまりがいつも正になるようにする
+        return i % j < 0 ? (i % j) + 0 + (j < 0 ? -j : j) : (i % j) + 0;
+    }
+
+    currentDayIndex = mod((count / 2) | 0, 7);
+    document.getElementById("currentDay").textContent =
+        daysOfWeek[currentDayIndex];
+    document.getElementById("AMPM").textContent = count % 2 === 0 ? "AM" : "PM";
+    g.attr("display", (d) => {
+        const businessHoursList = parseBusinessHours(
+            d[daysOfWeek[currentDayIndex]]
+        );
+        let isWithinBusinessHours = false;
+        for (const { start, end } of businessHoursList) {
+            if (start <= currentTime && currentTime < end) {
+                isWithinBusinessHours = true;
+                break;
+            }
+        }
+        return isWithinBusinessHours ? null : "none";
+    });
+}
+
 var drag = d3.drag().on("drag", function (event, d) {
     var dx = event.x,
         dy = event.y,
@@ -162,53 +217,6 @@ var drag = d3.drag().on("drag", function (event, d) {
     }
     currentTime = d.value + (count % 2) * 12;
     moveHands();
+    analogTime(d3.selectAll("circle.store"), currentTime, currentDayIndex);
 });
 d3.select(".hour-hand").call(drag);
-
-const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-];
-
-let currentDayIndex = 0; // 0 = Sunday
-
-function analogTime(g) {
-    function parseBusinessHours(businessHoursStr) {
-        const businessHoursList = businessHoursStr.split(",");
-        const result = businessHoursList.map((businessHours) => {
-            const [start, end] = businessHours.split("~").map((time) => {
-                // 余分なスペース、引用符、角括弧を削除
-                time = time.trim().replace(/['\[\]]/g, "");
-                const splitResult = time.split(":");
-                const [hour, minute] = splitResult.map(Number);
-                return hour + minute / 60;
-            });
-            return { start, end };
-        });
-
-        return result;
-    }
-    currentDayIndex = (count / 2) % 7;
-    document.getElementById("currentDay").textContent =
-        daysOfWeek[currentDayIndex];
-    g.selectAll("circle.store").attr("display", (d) => {
-        console.log(d);
-        const businessHoursList = parseBusinessHours(
-            d[daysOfWeek[currentDayIndex]]
-        );
-        let isWithinBusinessHours = false;
-        for (const { start, end } of businessHoursList) {
-            if (start <= currentTime && currentTime < end) {
-                isWithinBusinessHours = true;
-                break;
-            }
-        }
-        return isWithinBusinessHours ? null : "none";
-    });
-}
-export { analogTime };
