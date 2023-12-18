@@ -76,7 +76,6 @@ function drawClock() {
         .on("click", function (event, d) {
             // クリックされた時刻に針を移動
             handData[0].value = d + 6;
-            console.log(d);
             currentTime = d + (count % 2) * 12;
             moveHands();
             analogTime(
@@ -149,20 +148,11 @@ function moveHands() {
         });
 }
 
-function updateData() {
-    var t = new Date();
-    handData[0].value = (t.getHours() % 12) + t.getMinutes() / 60;
-}
-
-drawClock();
-
-d3.select(self.frameElement).style("height", height + "px");
-
-// 何回0時になったかをカウントして午前午後を判定
 var count = 0;
 let tmp;
 let currentTime;
 
+let currentDayIndex = 0; // 0 = Sunday
 const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -172,9 +162,19 @@ const daysOfWeek = [
     "Friday",
     "Saturday",
 ];
-const ja_daysOfWeek = ["月", "火", "水", "木", "金", "土", "日"];
+const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-let currentDayIndex = 0; // 0 = Sunday
+function updateData() {
+    handData[0].value = 0;
+    document.getElementById("currentDay").textContent =
+        en_daysOfWeek[currentDayIndex];
+    time = document.getElementById("AMPM").textContent =
+        count % 2 === 0 ? "AM" : "PM";
+}
+
+drawClock();
+
+d3.select(self.frameElement).style("height", height + "px");
 
 function analogTime(g, currentTime, currentDayIndex, count) {
     function parseBusinessHours(businessHoursStr) {
@@ -199,7 +199,7 @@ function analogTime(g, currentTime, currentDayIndex, count) {
 
     currentDayIndex = mod((count / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
-        ja_daysOfWeek[currentDayIndex];
+        en_daysOfWeek[currentDayIndex];
     AMPM = count % 2 === 0 ? "AM" : "PM";
     time = document.getElementById("AMPM").textContent =
         count % 2 === 0 ? "AM" : "PM";
@@ -259,6 +259,7 @@ var drag = d3.drag().on("drag", function (event, d) {
         count -= 1;
     }
     currentTime = d.value + (count % 2) * 12;
+    speed = 10;
     moveHands();
     analogTime(
         d3.selectAll("circle.store"),
@@ -266,6 +267,7 @@ var drag = d3.drag().on("drag", function (event, d) {
         currentDayIndex,
         count
     );
+    speed = 1000;
     changeBackgroundImage(currentTime);
 });
 d3.select(".hour-hand").call(drag);
@@ -311,16 +313,21 @@ function stopAutoPlay() {
 
 function changeBackgroundImage(currentTime) {
     var imageUrl;
-    if (currentTime < 3 || currentTime >= 18) {
-        imageUrl = "./img/night.jpg";
-    } else if (currentTime < 9) {
-        imageUrl = "./img/morning.jpg";
-    } else if (currentTime < 15) {
-        imageUrl = "./img/noon.jpg";
-    } else {
-        imageUrl = "./img/evening.jpg";
-    }
+    // if (currentTime < 3 || currentTime >= 18) {
+    //     imageUrl = "./img/night.jpg";
+    // } else if (currentTime < 9) {
+    //     imageUrl = "./img/morning.jpg";
+    // } else if (currentTime < 15) {
+    //     imageUrl = "./img/noon.jpg";
+    // } else {
+    //     imageUrl = "./img/evening.jpg";
+    // }
 
+    if (currentTime < 6 || currentTime >= 18) {
+        imageUrl = "./img/moon.png";
+    } else {
+        imageUrl = "./img/sun.png";
+    }
     var clockSvg = document.getElementById("clock-svg");
     clockSvg.style.backgroundImage = "url(" + imageUrl + ")";
 }

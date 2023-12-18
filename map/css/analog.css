@@ -40,6 +40,7 @@
 .hour-label {
     font-size: 24px;
     stroke: black;
+    /* font-family: "Helvetica", Arial, sans-serif; */
 }
 
 #clock-svg {
@@ -51,17 +52,21 @@
 #autoplay-button {
     width: 100px; /* 幅を200pxに設定 */
     height: 100px; /* 高さを50pxに設定 */
-    border: 2px solid white; /* 枠線を白に設定 */
+    border: 2px solid #f0f0f0;
+    cursor: pointer;
 }
 
 #autoplay-button.play {
-    background-image: url("../img/start.jpeg"); /* 再生時の画像 */
+    background-image: url("../img/start.png"); /* 再生時の画像 */
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 #autoplay-button.stop {
-    background-image: url("../img/stop.jpeg"); /* 停止時の画像 */
+    background-image: url("../img/stop.png"); /* 停止時の画像 */
     background-size: cover;
     background-repeat: no-repeat;
+}
+#autoplay-button:active {
+    transform: scale(0.95); /* クリック時に少し縮小 */
 }

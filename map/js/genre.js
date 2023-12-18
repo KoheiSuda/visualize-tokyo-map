@@ -53,7 +53,6 @@ function genre() {
             }
             // 地図上の店舗を更新
             mapping_stores(stores, g, projection, choice_genres);
-            //console.log(stores);
         });
 
     container

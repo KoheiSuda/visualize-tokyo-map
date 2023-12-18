@@ -42,6 +42,9 @@
     background-color: black;
     border-radius: 0;
 }
+body {
+    background-color: #f0f0f0; /* 背景色を薄い灰色に設定 */
+}
 
 /* ベーシックなスタイル */
 li div {
@@ -57,7 +60,9 @@ li div {
 .checkbox_container {
     display: flex; /* 要素を横並びに */
     align-items: center; /* 子要素を中央寄せに */
-    cursor: pointer; /* カーソルをpointerに */
+    margin-bottom: 10px; /* 下に隙間を追加 */
+    margin-left: 10px;
+    font-weight: bold;
 }
 
 .checkbox {
@@ -69,8 +74,11 @@ li div {
     margin-right: 10px; /* テキストとの隙間 */
     border: 2px solid black; /* ボーダー */
     box-sizing: border-box; /* ボーダーを含めたサイズにする */
+    cursor: pointer; /* カーソルをpointerに */
 }
-
+.checkbox:active {
+    transform: scale(0.95); /* クリック時に少し縮小 */
+}
 .checkbox.selected {
     border-color: black;
     /* 背景色を追加 */
@@ -90,7 +98,7 @@ li div {
 }
 
 #map {
-    background-color: #837f7f83;
+    background-color: #f0f0f0;
     /* その他のスタイルはそのまま */
     display: inline-block;
 }
@@ -111,8 +119,9 @@ li div {
 #checkboxContainer {
     width: 100%; /* 幅を親要素の100%に設定 */
 }
+
 #clock-svg {
-    background-image: url("../img/evening.jpg");
+    background-image: url("../img/moon.png");
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 50%; /* 角を丸くする */
@@ -121,10 +130,22 @@ li div {
 #Time {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 50%;
+    margin-top: 30px;
+    /* font-family: "Graduate", cursive; */
+    font-family: Arial, sans-serif;
+    font-size: 30px; /* フォントサイズを指定 */
 }
 
-#currentDay,
-#AMPM {
-    font-family: "Poppins"; /* Google Fontsから選択したフォントを指定します */
+#show-stations {
+    color: #fff;
+    font-weight: bold;
+    background: #000;
+    height: 46px;
+    border-radius: 23px;
+    padding: 15px 30px;
+    cursor: pointer;
+}
+#show-stations:active {
+    transform: scale(0.95); /* クリック時に少し縮小 */
 }
