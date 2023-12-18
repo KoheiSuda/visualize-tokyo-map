@@ -60,7 +60,8 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     // 駅を表示する
     mapping_stations(stations, station_lines, g, projection);
 
-    genre(g);
+    var maptype = "main";
+    genre(g, maptype);
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {

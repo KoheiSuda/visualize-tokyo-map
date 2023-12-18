@@ -4,7 +4,7 @@ import { shopData } from "./shopData.js";
 import { projection } from "./projection.js";
 
 let choice_genres = {};
-function genre(g) {
+function genre(g, maptype) {
     // ジャンルと色をマッピング
     var genreColorMap = {};
     for (var i = 0; i < shopData[0].genre.length; i++) {
@@ -43,7 +43,7 @@ function genre(g) {
                     .style("background-color", "white"); // 色を白に戻す
             }
             // 地図上の店舗を更新
-            mapping_stores(stores, g, projection, choice_genres);
+            mapping_stores(stores, g, projection, choice_genres, maptype);
         });
 
     container
