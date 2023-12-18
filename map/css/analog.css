@@ -30,6 +30,7 @@
 .hour-tick {
     stroke-width: 8;
     stroke: black;
+    cursor: pointer;
 }
 
 .second-label {
