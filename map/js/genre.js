@@ -1,5 +1,6 @@
-import { mapping_stores, g, projection } from "./map.js";
+import { mapping_stores, projection } from "./map.js";
 import { stores } from "./main.js";
+
 export var shopData = [
     {
         genre: [
@@ -13,7 +14,7 @@ export var shopData = [
     },
 ];
 let choice_genres = {};
-function genre() {
+function genre(g) {
     // ジャンルと色をマッピング
     var genreColorMap = {};
     for (var i = 0; i < shopData[0].genre.length; i++) {
