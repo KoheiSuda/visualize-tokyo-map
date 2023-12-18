@@ -9,7 +9,7 @@ export var shopData = [
             "クリニック",
             "ガソリンスタンド",
         ],
-        color: ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231"],
+        color: ["#ff0000", "#00ff00", "#0000ff", "#4363d8", "#f58231"],
     },
 ];
 let choice_genres = {};

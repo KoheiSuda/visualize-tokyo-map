@@ -1,9 +1,8 @@
+let speed = 1000;
 var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-var margin = 0; // マージンを0に設定
-var clockRadius = viewportWidth / 10; // ビューポートの幅と高さの小さい方の半分に設定
+var margin = 10; // マージンを0に設定
+var clockRadius = viewportWidth / 10 - margin; // ビューポートの幅と高さの小さい方の半分に設定
 var radians = 0.0174532925,
-    // clockRadius = 135,
-    // margin = 50,
     width = (clockRadius + margin) * 2,
     height = (clockRadius + margin) * 2,
     hourHandLength = (2 * clockRadius) / 3,
@@ -144,7 +143,7 @@ function moveHands() {
         .data(handData)
         .transition() // Add this line
         .ease(d3.easeLinear) // Add this line
-        .duration(300) // Add this line
+        .duration(speed) // Add this line
         .attr("transform", function (d) {
             return "rotate(" + d.scale(d.value) + ")";
         });
@@ -173,6 +172,7 @@ const daysOfWeek = [
     "Friday",
     "Saturday",
 ];
+const ja_daysOfWeek = ["月", "火", "水", "木", "金", "土", "日"];
 
 let currentDayIndex = 0; // 0 = Sunday
 
@@ -199,21 +199,49 @@ function analogTime(g, currentTime, currentDayIndex, count) {
 
     currentDayIndex = mod((count / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
-        daysOfWeek[currentDayIndex];
-    document.getElementById("AMPM").textContent = count % 2 === 0 ? "AM" : "PM";
-    g.attr("display", (d) => {
+        ja_daysOfWeek[currentDayIndex];
+    AMPM = count % 2 === 0 ? "AM" : "PM";
+    time = document.getElementById("AMPM").textContent =
+        count % 2 === 0 ? "AM" : "PM";
+    g.attr("stroke", (d) => {
         const businessHoursList = parseBusinessHours(
             d[daysOfWeek[currentDayIndex]]
         );
-        let isWithinBusinessHours = false;
+        let isBusinessStart = false;
         for (const { start, end } of businessHoursList) {
-            if (start <= currentTime && currentTime < end) {
-                isWithinBusinessHours = true;
+            if (start === currentTime && currentTime != 0) {
+                isBusinessStart = true;
                 break;
             }
         }
-        return isWithinBusinessHours ? null : "none";
-    });
+        return isBusinessStart ? "black" : "none"; // 色を変更
+    })
+        .attr("stroke-opacity", (d) => {
+            const businessHoursList = parseBusinessHours(
+                d[daysOfWeek[currentDayIndex]]
+            );
+            let isBusinessStart = false;
+            for (const { start, end } of businessHoursList) {
+                if (start === currentTime) {
+                    isBusinessStart = true;
+                    break;
+                }
+            }
+            return isBusinessStart ? 1 : 0.5; // 透明度を変更
+        })
+        .attr("display", (d) => {
+            const businessHoursList = parseBusinessHours(
+                d[daysOfWeek[currentDayIndex]]
+            );
+            let isWithinBusinessHours = false;
+            for (const { start, end } of businessHoursList) {
+                if (start <= currentTime && currentTime < end) {
+                    isWithinBusinessHours = true;
+                    break;
+                }
+            }
+            return isWithinBusinessHours ? null : "none";
+        });
 }
 
 var drag = d3.drag().on("drag", function (event, d) {
@@ -238,6 +266,7 @@ var drag = d3.drag().on("drag", function (event, d) {
         currentDayIndex,
         count
     );
+    changeBackgroundImage(currentTime);
 });
 d3.select(".hour-hand").call(drag);
 
@@ -267,7 +296,8 @@ function startAutoPlay() {
                 currentDayIndex,
                 count
             );
-        }, 300);
+            changeBackgroundImage(currentTime);
+        }, speed);
         button.classList.remove("play"); // Remove the 'play' class
         button.classList.add("stop"); // Add the 'stop' class
     }
@@ -277,4 +307,20 @@ function stopAutoPlay() {
         clearInterval(autoplay);
         autoplay = null;
     }
+}
+
+function changeBackgroundImage(currentTime) {
+    var imageUrl;
+    if (currentTime < 3 || currentTime >= 18) {
+        imageUrl = "./img/night.jpg";
+    } else if (currentTime < 9) {
+        imageUrl = "./img/morning.jpg";
+    } else if (currentTime < 15) {
+        imageUrl = "./img/noon.jpg";
+    } else {
+        imageUrl = "./img/evening.jpg";
+    }
+
+    var clockSvg = document.getElementById("clock-svg");
+    clockSvg.style.backgroundImage = "url(" + imageUrl + ")";
 }
