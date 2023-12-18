@@ -85,13 +85,13 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);
         })
-        .on("click", function (event) {
+        .on("dblclick", function (event) {
             const [x, y] = d3.pointer(event); // クリックされた地点のスクリーン座標
             const coords = projection.invert([x, y]); // 地理座標に変換
             click_lon = coords[0]; // 経度
             click_lat = coords[1]; // 緯度
             console.log("Latitude:", click_lat, "Longitude:", click_lon); // 緯度と経度をコンソールに表示
-            detail_map(click_lon, click_lat);
+            //detail_map(click_lon, click_lat, stores, {});
         });
 
     states.append("title").text((d) => d.properties.nam_ja);
@@ -104,9 +104,6 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
 
     //sliderclock(g);
     genre(g);
-
-    // 初期位置でdetailMapを作成
-    detail_map(139.4, 35.6895);
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {
