@@ -44,7 +44,11 @@
 }
 
 #clock-svg {
+<<<<<<< HEAD
+    /*position: fixed;*/
+=======
     /* position: fixed; */
+>>>>>>> 8f955f04b6cd2a2b1d319ce240c7c2c67c6a4a2a
     right: 0;
     top: 0;
 }

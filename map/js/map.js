@@ -2,6 +2,7 @@ import { mapping_stations } from "./station.js";
 import { sliderclock } from "./clock.js";
 import { genre, shopData } from "./genre.js";
 import { stores } from "./main.js";
+import { detail_map } from "./detail_map.js";
 
 let g;
 let projection;
@@ -59,6 +60,8 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     g = svg.append("g");
 
     const map_color = "#ffffff"; //"#e6e6fa";
+    let click_lat = -1; // 緯度
+    let click_lon = -1; // 経度
 
     const states = g
         .append("g")
@@ -71,9 +74,18 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("d", path)
         .on("mouseover", function (event, d) {
             d3.select(this).attr("fill", "red");
+            nameDisplay.text(d.properties.nam_ja); // Update the text
         })
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);
+        })
+        .on("dblclick", function (event) {
+            const [x, y] = d3.pointer(event); // クリックされた地点のスクリーン座標
+            const coords = projection.invert([x, y]); // 地理座標に変換
+            click_lon = coords[0]; // 経度
+            click_lat = coords[1]; // 緯度
+            console.log("Latitude:", click_lat, "Longitude:", click_lon); // 緯度と経度をコンソールに表示
+            detail_map(click_lon, click_lat, stores, {});
         });
 
     states.append("title").text((d) => d.properties.nam_ja);
