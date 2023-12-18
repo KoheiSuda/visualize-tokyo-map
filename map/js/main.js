@@ -1,7 +1,7 @@
 // main.js
 
 import { createMap } from "./map.js";
-import { shopData } from "./genre.js";
+import { shopData } from "./shopData.js";
 
 let stores;
 const getData = async () => {

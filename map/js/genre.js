@@ -1,18 +1,8 @@
-import { mapping_stores, projection } from "./map.js";
+import { mapping_stores } from "./mapping_stores.js";
 import { stores } from "./main.js";
+import { shopData } from "./shopData.js";
+import { projection } from "./projection.js";
 
-export var shopData = [
-    {
-        genre: [
-            "ラーメン",
-            "居酒屋",
-            "カフェ",
-            "クリニック",
-            "ガソリンスタンド",
-        ],
-        color: ["#ff0000", "#00ff00", "#0000ff", "#4363d8", "#f58231"],
-    },
-];
 let choice_genres = {};
 function genre(g) {
     // ジャンルと色をマッピング

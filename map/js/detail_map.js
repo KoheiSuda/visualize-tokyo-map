@@ -1,5 +1,6 @@
 import { genre } from "./genre.js";
-import { mapping_stores } from "./map.js";
+import { mapping_stores } from "./mapping_stores.js";
+import { projection } from "./projection.js";
 
 // Leaflet マップにカスタムコントロールとしてボタンを追加する関数
 function addBackToD3MapButton(map) {
@@ -69,12 +70,10 @@ function detail_map(click_lon, click_lat, stores, choice_genres) {
     // D3.js で SVG レイヤーを選択
     var svg = d3.select("#map").select("svg");
 
-    g = svg.append("g");
+    projection;
 
-    // 地図上に点をプロットする
-    mapping_stores(stores, g, projection, {});
-
-    //sliderclock(g);
+    var g = svg.append("g");
+    
     genre(g);
 
     // ボタンを追加
