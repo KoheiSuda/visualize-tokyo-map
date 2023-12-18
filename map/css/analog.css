@@ -52,31 +52,20 @@
     top: 0;
 }
 
-.play {
-    color: black;
-}
-
-.stop {
-    color: black;
-}
-
 #autoplay-button {
-    border: none;
-    background-color: transparent;
-    font-size: 30px;
-    cursor: pointer;
-    width: 60px; /* Adjust as needed */
-    height: 60px; /* Adjust as needed */
-    border-radius: 50%; /* Make the button round */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100px; /* 幅を200pxに設定 */
+    height: 100px; /* 高さを50pxに設定 */
+    border: 2px solid white; /* 枠線を白に設定 */
 }
 
-#autoplay-button.play::before {
-    content: "▶";
+#autoplay-button.play {
+    background-image: url("../img/start.jpeg"); /* 再生時の画像 */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-#autoplay-button.stop::before {
-    content: "||";
+#autoplay-button.stop {
+    background-image: url("../img/stop.jpeg"); /* 停止時の画像 */
+    background-size: cover;
+    background-repeat: no-repeat;
 }

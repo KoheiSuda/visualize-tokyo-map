@@ -27,8 +27,8 @@ const mapping_stores = (stores, g, projection, choice_genres) => {
         .attr("class", "store")
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
-        .attr("r", 1) // 点の半径
-        .attr("opacity", 1) // 点の透明度
+        .attr("r", 8) // 点の半径
+        .attr("opacity", 0.1) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .merge(circles); // For updating existing circles if needed
 
@@ -45,7 +45,9 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("viewBox", [0, 0, width, height])
         .attr("width", width)
         .attr("height", height)
-        .attr("style", "max-width: 100%; height: ${window.innerHeight}px;"); // 900にしてるの適当すぎるかも
+        .attr("style", "max-width: 100%; height: ${window.innerHeight}px;")
+        .attr("stroke", "gray") // 枠線の色を黒に設定
+        .attr("stroke-width", "1"); // 枠線の幅を2に設定
 
     projection = d3
         .geoMercator()
@@ -57,17 +59,9 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
 
     g = svg.append("g");
 
-    const map_color = "#444";
+    const map_color = "#ffffff"; //"#e6e6fa";
     let click_lat = -1; // 緯度
     let click_lon = -1; // 経度
-
-    // Add a text element to the SVG
-    var nameDisplay = svg
-        .append("text")
-        .attr("x", 100) // Adjust as needed
-        .attr("y", 100) // Adjust as needed
-        .attr("text-anchor", "end") // Right align the text
-        .text("");
 
     const states = g
         .append("g")
