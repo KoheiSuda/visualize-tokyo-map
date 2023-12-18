@@ -1,5 +1,5 @@
 import { genre } from "./genre.js";
-import { mapping_stores } from "./map";
+import { mapping_stores } from "./map.js";
 
 // Leaflet マップにカスタムコントロールとしてボタンを追加する関数
 function addBackToD3MapButton(map) {

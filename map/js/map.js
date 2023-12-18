@@ -85,7 +85,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
             click_lon = coords[0]; // 経度
             click_lat = coords[1]; // 緯度
             console.log("Latitude:", click_lat, "Longitude:", click_lon); // 緯度と経度をコンソールに表示
-            //detail_map(click_lon, click_lat, stores, {});
+            detail_map(click_lon, click_lat, stores, {});
         });
 
     states.append("title").text((d) => d.properties.nam_ja);
