@@ -97,7 +97,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     //mapping_stores(stores, g, projection, {});
 
     //sliderclock(g);
-    genre();
+    genre(g);
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {
