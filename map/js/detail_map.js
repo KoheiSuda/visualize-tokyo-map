@@ -1,6 +1,5 @@
 import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { projection } from "./projection.js";
-import { choice_genres } from "./genre.js";
 
 let detailMap
 let gd
@@ -47,12 +46,19 @@ function switchToD3Map() {
 }
 
 function detail_map(click_lon, click_lat, stores) {
+    const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
+        .style("opacity", 0);
+
     // 既存の地図コンテナを取得または新しく作成
     let mapContainer = document.getElementById("map");
     if (!mapContainer) {
         mapContainer = document.createElement("div");
         mapContainer.id = "map";
-        mapContainer.style.height = "400px"; // 地図の高さを設定
+        mapContainer.style.height = "100vh"; // 地図の高さを設定
+        mapContainer.style.width = "80px"; // 地図の幅を設定
         document.body.appendChild(mapContainer); // bodyまたは別の適切な要素に追加
     } else {
         // 既存の地図インスタンスを削除
@@ -60,7 +66,7 @@ function detail_map(click_lon, click_lat, stores) {
     }
 
     // 新しい地図インスタンスを初期化
-    detailMap = L.map("map").setView([click_lat, click_lon], 15);
+    detailMap = L.map("map").setView([click_lat, click_lon], 14);
 
     // OSMタイルレイヤーを追加
     L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
@@ -72,6 +78,7 @@ function detail_map(click_lon, click_lat, stores) {
 
     // D3.js で SVG レイヤーを選択
     var svg = d3.select("#map").select("svg");
+
 
     gd = svg.append("g")
 
@@ -95,7 +102,7 @@ function detail_map(click_lon, click_lat, stores) {
     mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     // マップがズームまたはドラッグされたときに発生するイベントをリッスン
     detailMap.on('moveend', function() {
-        console.log(choice_genres);
+        tooltip.transition().duration(500).style("opacity", 0);
         mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     });
     // ボタンを追加
