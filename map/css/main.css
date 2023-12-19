@@ -185,7 +185,3 @@ li div {
     bottom: 5%;
     left: 5%;
 }
-
-.station-line {
-    z-index: 10000000; /* 他の要素より上に表示 */
-}

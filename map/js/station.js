@@ -1,5 +1,3 @@
-import { detailMap } from "./detail_map.js";
-
 const mapping_stations = (stations, station_lines, g, projection) => {
     // Create a map of station codes to coordinates
     const stationCoords = new Map(
@@ -83,20 +81,6 @@ const mapping_stations = (stations, station_lines, g, projection) => {
             stationLines.attr("visibility", "hidden");
         }
     });
-
-    const toggleButtonDisplay = (buttonId, shouldDisplay) => {
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.style.display = shouldDisplay ? "block" : "none";
-        }
-    };
-
-    // ボタンの表示を制御する例
-    if (detailMap !== undefined) {
-        toggleButtonDisplay("show-stations", false); // ボタンを非表示
-    } else {
-        toggleButtonDisplay("show-stations", true); // ボタンを表示
-    }
 };
 
 export { mapping_stations };
