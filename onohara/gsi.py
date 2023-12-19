@@ -4,7 +4,7 @@ import urllib
 import re
 
 # CSVファイルの読み込み
-file_path = 'izakaya.csv'  # ここにCSVファイルのパスを入力してください
+file_path = 'gas.csv'  # ここにCSVファイルのパスを入力してください
 df = pd.read_csv(file_path)
 
 # 住所から緯度経度を取得する関数
@@ -33,11 +33,11 @@ df['Cleaned_Address'] = df['address'].apply(clean_address)
 df['Coordinates'] = df['Cleaned_Address'].apply(address_to_lat_lon)
 
 # 緯度と経度の列を作成
-df['Latitude'], df['Longitude'] = zip(*df['Coordinates'])
+df['Longitude'], df['Latitude'] = zip(*df['Coordinates'])
 
 # Coordinates列を削除
 df.drop('Coordinates', axis=1, inplace=True)
 
 # 結果を新しいCSVファイルに保存
-output_file_path = 'izakaya_with_lat_lon.csv'
+output_file_path = 'gas_with_lat_lon.csv'
 df.to_csv(output_file_path, index=False)

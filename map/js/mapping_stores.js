@@ -25,6 +25,22 @@ const mapping_stores = (stores, g, projection, choice_genres) => {
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .merge(circles); // For updating existing circles if needed
 
+    const opaInput = document.getElementById("opa");
+    const radInput = document.getElementById("rad");
+
+    opaInput.addEventListener("input", updateOpacity);
+    radInput.addEventListener("input", updateRadius);
+
+    function updateOpacity() {
+        const newOpacity = opaInput.value / 100; // range inputの値は0から48なので、0から1の範囲に正規化
+        d3.selectAll("circle.store").attr("opacity", newOpacity);
+    }
+
+    function updateRadius() {
+        const newRadius = radInput.value; // range inputの値をそのまま半径として使用
+        d3.selectAll("circle.store").attr("r", newRadius);
+    }
+
     circles.exit().remove(); // Remove circles that are no longer in the data
 };
 export { mapping_stores };
