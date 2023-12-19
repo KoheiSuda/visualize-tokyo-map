@@ -150,9 +150,9 @@ function moveHands() {
 
 var count = 0;
 let tmp;
-let currentTime;
+//let currentTime;
 
-let currentDayIndex = 0; // 0 = Sunday
+//let currentDayIndex = 0; // 0 = Sunday
 const daysOfWeek = [
     "Sunday",
     "Monday",

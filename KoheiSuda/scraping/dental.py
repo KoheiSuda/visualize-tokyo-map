@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # ファイルパスを指定
-file_path = 'url_dental.txt'
+file_path = r'C:\Users\denjo\OneDrive\infovis\Capstone-project-B-Creators\KoheiSuda\scraping\url_dental.txt'
 
 ret = []
 
@@ -19,15 +19,21 @@ with open(file_path, 'r') as file:
         soup = BeautifulSoup(html, 'html.parser')
 
         # "card search-shop"クラスを持つすべての要素を取得
-        results = soup.find('div', class_='result-box').find_all('div', class_='result')
+        results = soup.find('div', class_='result-box')
+        if results is None:
+            continue
+        results = results.find_all('div', class_='result')
 
         count = 0
         # 各カード要素に対して処理を行う
         for result in results:
             name_tag = result.find('a', class_='result__name')
             name = name_tag.get_text()
-            address_tag = result.find('i', class_='ico-area-gray result-data__icon')
-            address = address_tag.get_text()
+            
+            address_tag = result.find('li', class_='result-data__list')
+            address = address_tag.get_text().strip()
+            #print(address)
+            
             # 営業時間の配列を初期化
             business_hours = [[] for _ in range(7)]  # 月曜から日曜まで
 
@@ -40,6 +46,7 @@ with open(file_path, 'r') as file:
                 for i in range(1, 8):
                     if cells[i].get_text().strip() == '●':
                         business_hours[i-1].append(time_range)
+            #print(name, address, business_hours)
             ret.append([name, address, business_hours])
 
 import csv

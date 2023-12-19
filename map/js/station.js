@@ -31,14 +31,14 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .data(stations)
         .enter()
         .append("rect")
-        //.attr("class", "station")
+        .attr("class", "station-rect")
         .attr("x", (d) => projection([+d.lon, +d.lat])[0] - 2)
         .attr("y", (d) => projection([+d.lon, +d.lat])[1] - 2)
         .attr("width", 4) // Adjust the size as needed
         .attr("height", 4) // Adjust the size as needed
         .attr("fill", "none") // No fill color
-        .attr("opacity", 0.3) // Start with opacity 0
-        .attr("stroke", "white") // Choose a color that stands out
+        .attr("opacity", 0.8) // Start with opacity 0
+        .attr("stroke", "gray") // Choose a color that stands out
         .attr("stroke-width", 1) // Adjust the stroke width as needed
         //.attr("r", 2) // End with radius 3
         .attr("visibility", "hidden"); // Start hidden
@@ -49,25 +49,35 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .data(station_lines)
         .enter()
         .append("line")
-        //.attr("class", "station-line")
+        .attr("class", "station-line")
         .attr("x1", (d) => projection(stationCoords.get(d.station_cd1))[0])
         .attr("y1", (d) => projection(stationCoords.get(d.station_cd1))[1])
         .attr("x2", (d) => projection(stationCoords.get(d.station_cd2))[0])
         .attr("y2", (d) => projection(stationCoords.get(d.station_cd2))[1])
         .attr("stroke", (d) => customColors[d.line_cd] || "black") // Default to black if line_cd is not in customColors
         .attr("stroke-width", 2) // End with stroke-width 2
-        .attr("opacity", 0.2) // End with opacity 0.8
+        .attr("opacity", 0.8) // End with opacity 0.8
         .attr("visibility", "hidden"); // Start hidden
 
     let stationsVisible = false;
     // Click event handler
-    
+
     document.getElementById("show-stations").addEventListener("click", () => {
         stationsVisible = !stationsVisible;
 
         if (stationsVisible) {
             stationSquares.attr("visibility", "visible");
             stationLines.attr("visibility", "visible");
+
+            // .station-line クラスを持つすべての要素を最前面に移動
+            document.querySelectorAll(".station-line").forEach((element) => {
+                element.parentNode.appendChild(element);
+            });
+
+            // .station-rect クラスを持つすべての要素を最前面に移動
+            document.querySelectorAll(".station-rect").forEach((element) => {
+                element.parentNode.appendChild(element);
+            });
         } else {
             stationSquares.attr("visibility", "hidden");
             stationLines.attr("visibility", "hidden");
@@ -77,21 +87,16 @@ const mapping_stations = (stations, station_lines, g, projection) => {
     const toggleButtonDisplay = (buttonId, shouldDisplay) => {
         const button = document.getElementById(buttonId);
         if (button) {
-            button.style.display = shouldDisplay ? 'block' : 'none';
+            button.style.display = shouldDisplay ? "block" : "none";
         }
     };
-    console.log(detailMap);
+
     // ボタンの表示を制御する例
-    if (detailMap !== undefined){
-        toggleButtonDisplay('show-stations', false); // ボタンを非表示
-    }else{
-        toggleButtonDisplay('show-stations', true); // ボタンを表示
+    if (detailMap !== undefined) {
+        toggleButtonDisplay("show-stations", false); // ボタンを非表示
+    } else {
+        toggleButtonDisplay("show-stations", true); // ボタンを表示
     }
-    
 };
-
-
-
-
 
 export { mapping_stations };
