@@ -52,7 +52,8 @@ function detail_map(click_lon, click_lat, stores) {
     if (!mapContainer) {
         mapContainer = document.createElement("div");
         mapContainer.id = "map";
-        mapContainer.style.height = "400px"; // 地図の高さを設定
+        mapContainer.style.height = "60px"; // 地図の高さを設定
+        mapContainer.style.width = "80px"; // 地図の幅を設定
         document.body.appendChild(mapContainer); // bodyまたは別の適切な要素に追加
     } else {
         // 既存の地図インスタンスを削除
