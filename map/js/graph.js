@@ -1,5 +1,11 @@
 import { stores } from "./main.js";
 
+// ジャンルと色の対応関係を表すオブジェクトを作成
+let genreColorMap = {};
+for (let i = 0; i < shopData[0].genre.length; i++) {
+    genreColorMap[shopData[0].genre[i]] = shopData[0].color[i];
+}
+
 function createGraph(cityName, currentTime, currentDayIndex) {
     let data = stores.filter((store) =>
         store.Cleaned_Address.includes(cityName)
@@ -22,23 +28,31 @@ function createGraph(cityName, currentTime, currentDayIndex) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     x.domain([0, 1000]);
-    y.domain(shopData[0].genre);
+
+    // y.domainを選択されたジャンルだけを含むように設定
+    let selectedGenres = Object.keys(choice_genres).filter(
+        (genre) => choice_genres[genre][0]
+    );
+    y.domain(selectedGenres);
     // グループ化したデータに対してバーを描画
     dataGroupedByGenre.forEach((value, key) => {
-        let total = value.length;
-        //console.log(total);
-        svg.selectAll(".bar")
-            .data(value)
-            .enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("width", function (d) {
-                return x(total);
-            })
-            .attr("y", function (d) {
-                return y(key); // y軸の位置は genre のキーに基づく
-            })
-            .attr("height", y.bandwidth());
+        // choice_genres の該当ジャンルが true の場合のみ描画
+        if (choice_genres[key][0]) {
+            let total = value.length;
+            svg.selectAll(".bar")
+                .data(value)
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("width", function (d) {
+                    return x(total);
+                })
+                .attr("y", function (d) {
+                    return y(key); // y軸の位置は genre のキーに基づく
+                })
+                .attr("height", y.bandwidth())
+                .attr("fill", genreColorMap[key]);
+        }
     });
 
     var xAxis = svg
@@ -65,8 +79,7 @@ function createGraph(cityName, currentTime, currentDayIndex) {
         .attr("x", -height / 2) // 中央に配置
         .attr("y", -30) // 軸から少し左に移動
         .style("text-anchor", "middle") // 中央揃え
-        .style("fill", "black") // 黒色に設定
-        .text("genre");
+        .style("fill", "black"); // 黒色に設定
 }
 
 export { createGraph };
