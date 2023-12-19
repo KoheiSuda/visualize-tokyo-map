@@ -56,6 +56,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
             tooltip.transition().duration(500).style("opacity", 0);
         })
         .on("dblclick", function (event) {
+            tooltip.transition().duration(500).style("opacity", 0);
             const [x, y] = d3.pointer(event); // クリックされた地点のスクリーン座標
             const coords = projection.invert([x, y]); // 地理座標に変換
             click_lon = coords[0]; // 経度

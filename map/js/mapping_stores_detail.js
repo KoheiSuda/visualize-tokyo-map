@@ -46,9 +46,10 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
             d3.select(this).attr("fill", "black");
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip
-                .html(d.store_name)
+                .html(d.genre + "<br/>" + d.store_name)
                 .style("left", event.pageX + "px") // カーソルの右側に表示
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
+            
         })				
         .on("mouseout", function () {
             d3.select(this).attr("fill", (d) => colorScale(d.genre));
