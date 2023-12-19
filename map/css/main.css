@@ -130,6 +130,7 @@ li div {
     /* font-family: "Graduate", cursive; */
     font-family: Arial, sans-serif;
     font-size: 30px; /* フォントサイズを指定 */
+    user-select: none;
 }
 
 #show-stations {
@@ -140,6 +141,7 @@ li div {
     border-radius: 23px;
     padding: 15px 30px;
     cursor: pointer;
+    user-select: none;
 }
 #show-stations:active {
     transform: scale(0.95); /* クリック時に少し縮小 */
@@ -170,11 +172,16 @@ li div {
     z-index: 1000; /* 他の要素より上に表示 */
 }
 
-
 .leaflet-pane {
     pointer-events: none;
 }
 
 .leaflet-pane svg {
     pointer-events: auto;
+}
+
+#graph {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
 }

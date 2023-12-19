@@ -1,5 +1,4 @@
 import { stores } from "./main.js";
-import { shopData } from "./shopData.js";
 
 function createGraph(cityName, currentTime, currentDayIndex) {
     let data = stores.filter((store) =>
@@ -27,7 +26,7 @@ function createGraph(cityName, currentTime, currentDayIndex) {
     // グループ化したデータに対してバーを描画
     dataGroupedByGenre.forEach((value, key) => {
         let total = value.length;
-        console.log(total);
+        //console.log(total);
         svg.selectAll(".bar")
             .data(value)
             .enter()

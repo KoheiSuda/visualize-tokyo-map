@@ -44,7 +44,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .join("path")
         .attr("d", path)
         .on("mouseover", function (event, d) {
-            console.log("mouseover");
+            //console.log("mouseover");
             d3.select(this).attr("fill", "red");
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip

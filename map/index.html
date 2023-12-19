@@ -30,24 +30,29 @@
         <script type="module" src="./js/main.js"></script>
         <div id="parameter">
             <label for="opa">Opacity:</label>
-            <input type="range" min="1" max="100" value="10" step="1" id="opa" />
+            <input
+                type="range"
+                min="1"
+                max="100"
+                value="10"
+                step="1"
+                id="opa"
+            />
             <label for="rad">Radius:</label>
-            <input type="range" min="0.1" max="12" value="8" step="0.1" id="rad" />
+            <input
+                type="range"
+                min="0.1"
+                max="12"
+                value="8"
+                step="0.1"
+                id="rad"
+            />
         </div>
         <div id="container">
             <div id="map" style="width: 80%; height: 100vh"></div>
             <div id="clock" style="width: 20%">
                 <div id="Time">
                     <div id="currentDay"></div>
-                    <!-- <select id="currentDay">
-                        <option value="0">月</option>
-                        <option value="1">火</option>
-                        <option value="2">水</option>
-                        <option value="3">木</option>
-                        <option value="4">金</option>
-                        <option value="5">土</option>
-                        <option value="6">日</option>
-                    </select> -->
                     <div id="AMPM"></div>
                 </div>
                 <script src="./js/analog.js"></script>

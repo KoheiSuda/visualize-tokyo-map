@@ -203,45 +203,19 @@ function analogTime(g, currentTime, currentDayIndex, count) {
     AMPM = count % 2 === 0 ? "AM" : "PM";
     time = document.getElementById("AMPM").textContent =
         count % 2 === 0 ? "AM" : "PM";
-    g.attr("stroke", (d) => {
+    g.attr("display", (d) => {
         const businessHoursList = parseBusinessHours(
             d[daysOfWeek[currentDayIndex]]
         );
-        let isBusinessStart = false;
+        let isWithinBusinessHours = false;
         for (const { start, end } of businessHoursList) {
-            if (start === currentTime && currentTime != 0) {
-                isBusinessStart = true;
+            if (start <= currentTime && currentTime < end) {
+                isWithinBusinessHours = true;
                 break;
             }
         }
-        return isBusinessStart ? "black" : "none"; // 色を変更
-    })
-        .attr("stroke-opacity", (d) => {
-            const businessHoursList = parseBusinessHours(
-                d[daysOfWeek[currentDayIndex]]
-            );
-            let isBusinessStart = false;
-            for (const { start, end } of businessHoursList) {
-                if (start === currentTime) {
-                    isBusinessStart = true;
-                    break;
-                }
-            }
-            return isBusinessStart ? 1 : 0.5; // 透明度を変更
-        })
-        .attr("display", (d) => {
-            const businessHoursList = parseBusinessHours(
-                d[daysOfWeek[currentDayIndex]]
-            );
-            let isWithinBusinessHours = false;
-            for (const { start, end } of businessHoursList) {
-                if (start <= currentTime && currentTime < end) {
-                    isWithinBusinessHours = true;
-                    break;
-                }
-            }
-            return isWithinBusinessHours ? null : "none";
-        });
+        return isWithinBusinessHours ? null : "none";
+    });
 }
 
 var drag = d3.drag().on("drag", function (event, d) {
