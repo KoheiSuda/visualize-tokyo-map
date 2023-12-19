@@ -52,7 +52,7 @@ function detail_map(click_lon, click_lat, stores) {
     if (!mapContainer) {
         mapContainer = document.createElement("div");
         mapContainer.id = "map";
-        mapContainer.style.height = "60px"; // 地図の高さを設定
+        mapContainer.style.height = "100vh"; // 地図の高さを設定
         mapContainer.style.width = "80px"; // 地図の幅を設定
         document.body.appendChild(mapContainer); // bodyまたは別の適切な要素に追加
     } else {
@@ -61,7 +61,7 @@ function detail_map(click_lon, click_lat, stores) {
     }
 
     // 新しい地図インスタンスを初期化
-    detailMap = L.map("map").setView([click_lat, click_lon], 15);
+    detailMap = L.map("map").setView([click_lat, click_lon], 14);
 
     // OSMタイルレイヤーを追加
     L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
