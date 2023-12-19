@@ -1,5 +1,3 @@
-
-
 // Create a color mapping function
 const colorScale = d3
     .scaleOrdinal()
@@ -11,11 +9,13 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
     function sortByGenre(a, b) {
         return choice_genres[a.genre][1] - choice_genres[b.genre][1];
     }
-    
+
     // ソートを適用
     stores.sort(sortByGenre);
 
-    const filteredStores = stores.filter((store) => choice_genres[store.genre][0]);
+    const filteredStores = stores.filter(
+        (store) => choice_genres[store.genre][0]
+    );
     const circles = g
         .selectAll("circle.store")
         .data(filteredStores, (d) => d.id); // Assuming each store has a unique 'id' property
@@ -25,17 +25,21 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .append("div")
         .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
         .style("opacity", 0);
-    
+
     circles
         .enter()
         .append("circle")
         .attr("class", "store")
         .attr("cx", (d) => {
-            const point = map.latLngToLayerPoint(new L.LatLng(d.Latitude, d.Longitude));
+            const point = map.latLngToLayerPoint(
+                new L.LatLng(d.Latitude, d.Longitude)
+            );
             return point.x;
         })
         .attr("cy", (d) => {
-            const point = map.latLngToLayerPoint(new L.LatLng(d.Latitude, d.Longitude));
+            const point = map.latLngToLayerPoint(
+                new L.LatLng(d.Latitude, d.Longitude)
+            );
             return point.y;
         })
         .attr("r", currentRadius) // 点の半径
@@ -49,8 +53,7 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
                 .html(d.genre + "<br/>" + d.store_name)
                 .style("left", event.pageX + "px") // カーソルの右側に表示
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
-            
-        })				
+        })
         .on("mouseout", function () {
             d3.select(this).attr("fill", (d) => colorScale(d.genre));
             tooltip.transition().duration(500).style("opacity", 0);
