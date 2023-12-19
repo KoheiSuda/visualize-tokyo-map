@@ -11,9 +11,17 @@ let currentOpacity = 0.1; // 初期値
 let currentRadius = 8; // 初期値
 
 const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
-    const filteredStores = stores.filter((store) => choice_genres[store.genre]);
+    // ジャンルに基づいてソートする関数
+    function sortByGenre(a, b) {
+        return choice_genres[a.genre][1] - choice_genres[b.genre][1];
+    }
+    
+    // ソートを適用
+    stores.sort(sortByGenre);
 
+    const filteredStores = stores.filter((store) => choice_genres[store.genre][0]);
     const circles = g
+
         .selectAll("circle.store")
         .data(filteredStores, (d) => d.id); // Assuming each store has a unique 'id' property
 

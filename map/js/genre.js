@@ -7,6 +7,8 @@ import { detailMap, gd } from "./detail_map.js";
 import { g } from "./map.js";
 
 let choice_genres = {};
+let order = 0;
+
 function genre() {
     // ジャンルと色をマッピング
     var genreColorMap = {};
@@ -16,7 +18,7 @@ function genre() {
 
     // ジャンル選択状態を管理するオブジェクトを定義します
     for (var i of shopData[0].genre) {
-        choice_genres[i] = false;
+        choice_genres[i] = [false, 0];
     }
 
     // ジャンル選択ボタン
@@ -34,9 +36,16 @@ function genre() {
         .style("border", "2px solid black")
         .on("click", function (event, d) {
             event.stopPropagation();
-            choice_genres[d] = !choice_genres[d];
+            choice_genres[d][0] = !choice_genres[d][0];
+            if (choice_genres[d][0] == true) {
+                choice_genres[d][1] = order + 1;
+                order += 1;
+            }else{
+                choice_genres[d][1] = 0;
+            }
+            console.log(choice_genres[d][1]);
             var currentCheckbox = d3.select(event.currentTarget);
-            if (choice_genres[d]) {
+            if (choice_genres[d][0]) {
                 currentCheckbox
                     .classed("selected", true)
                     .style("background-color", genreColorMap[d]);
