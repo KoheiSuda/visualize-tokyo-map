@@ -73,8 +73,8 @@ function detail_map(click_lon, click_lat, stores, choice_genres) {
     projection;
 
     var g = svg.append("g");
-    
-    genre(g);
+    var maptype = "detail";
+    genre(g, maptype);
 
     // ボタンを追加
     addBackToD3MapButton(detailMap);
