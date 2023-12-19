@@ -97,7 +97,6 @@ function detail_map(click_lon, click_lat, stores) {
     mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     // マップがズームまたはドラッグされたときに発生するイベントをリッスン
     detailMap.on('moveend', function() {
-        console.log(choice_genres);
         mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     });
     // ボタンを追加

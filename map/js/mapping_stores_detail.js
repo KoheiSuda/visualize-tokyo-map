@@ -42,7 +42,8 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .attr("fill-opacity", currentOpacity) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .on("mouseover", function (event, d) {
-            d3.select(this).attr("fill", "red");
+            console.log("mouseover");
+            d3.select(this).attr("fill", "black");
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip
                 .html(d.store_name)
@@ -50,7 +51,7 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
         })				
         .on("mouseout", function () {
-            d3.select(this).attr("fill", map_color);
+            d3.select(this).attr("fill", (d) => colorScale(d.genre));
             tooltip.transition().duration(500).style("opacity", 0);
         })
         .merge(circles); // For updating existing circles if needed

@@ -43,7 +43,6 @@ function genre() {
             }else{
                 choice_genres[d][1] = 0;
             }
-            console.log(choice_genres[d][1]);
             var currentCheckbox = d3.select(event.currentTarget);
             if (choice_genres[d][0]) {
                 currentCheckbox
