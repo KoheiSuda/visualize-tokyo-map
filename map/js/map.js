@@ -3,9 +3,9 @@ import { genre } from "./genre.js";
 import { stores } from "./main.js";
 import { detail_map } from "./detail_map.js";
 import { width, height, projection } from "./projection.js";
+import { createGraph } from "./graph.js";
 
 let g;
-let maptype;
 
 const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     projection;
@@ -44,18 +44,22 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .join("path")
         .attr("d", path)
         .on("mouseover", function (event, d) {
+            //console.log("mouseover");
             d3.select(this).attr("fill", "red");
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip
                 .html(d.properties.ward_ja)
                 .style("left", event.pageX + "px") // カーソルの右側に表示
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
+            createGraph(d.properties.ward_ja, 0, 0);
         })
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);
             tooltip.transition().duration(500).style("opacity", 0);
+            d3.select("#graph").select("svg").remove(); // グラフを消す
         })
         .on("dblclick", function (event) {
+            tooltip.transition().duration(500).style("opacity", 0);
             const [x, y] = d3.pointer(event); // クリックされた地点のスクリーン座標
             const coords = projection.invert([x, y]); // 地理座標に変換
             click_lon = coords[0]; // 経度
