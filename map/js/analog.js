@@ -313,16 +313,6 @@ function stopAutoPlay() {
 
 function changeBackgroundImage(currentTime) {
     var imageUrl;
-    // if (currentTime < 3 || currentTime >= 18) {
-    //     imageUrl = "./img/night.jpg";
-    // } else if (currentTime < 9) {
-    //     imageUrl = "./img/morning.jpg";
-    // } else if (currentTime < 15) {
-    //     imageUrl = "./img/noon.jpg";
-    // } else {
-    //     imageUrl = "./img/evening.jpg";
-    // }
-
     if (currentTime < 6 || currentTime >= 18) {
         imageUrl = "./img/moon.png";
     } else {

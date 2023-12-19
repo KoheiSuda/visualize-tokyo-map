@@ -14,6 +14,7 @@
     stroke-width: 12;
     stroke-linecap: round;
     stroke: black;
+    cursor: pointer;
 }
 
 .hands-cover {
@@ -30,6 +31,7 @@
 .hour-tick {
     stroke-width: 8;
     stroke: black;
+    cursor: pointer;
 }
 
 .second-label {
@@ -69,4 +71,10 @@
 }
 #autoplay-button:active {
     transform: scale(0.95); /* クリック時に少し縮小 */
+}
+
+#autoplay-button.fast {
+    background-image: url("../img/speedup.png"); /* 高速再生時の画像 */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
