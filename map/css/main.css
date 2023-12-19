@@ -146,8 +146,9 @@ li div {
 }
 #parameter {
     position: fixed; /* ページのスクロールに関係なく常に同じ位置に配置 */
+    z-index: 1000; /* 他の要素より上に表示 */
     bottom: 0; /* 下端から0pxの位置に配置 */
-    left: 0; /* 左端から0pxの位置に配置 */
+    right: 20%; /* 左端から0pxの位置に配置 */
     display: flex; /* フレックスボックスレイアウトを適用 */
     flex-direction: column; /* 子要素を縦方向に配置 */
     margin-bottom: 10px;
