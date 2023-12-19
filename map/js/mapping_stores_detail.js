@@ -25,16 +25,14 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .attr("class", "store")
         .attr("cx", (d) => {
             const point = map.latLngToLayerPoint(new L.LatLng(d.Latitude, d.Longitude));
-            //console.log(`cx for id ${d.id}: ${point.x}`);
             return point.x;
         })
         .attr("cy", (d) => {
             const point = map.latLngToLayerPoint(new L.LatLng(d.Latitude, d.Longitude));
-            //console.log(`cy for id ${d.id}: ${point.y}`);
             return point.y;
         })
-        .attr("r", 5) // 点の半径
-        .attr("fill-opacity", 1) // 点の透明度
+        .attr("r", currentRadius) // 点の半径
+        .attr("fill-opacity", currentOpacity) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         
         .merge(circles); // For updating existing circles if needed

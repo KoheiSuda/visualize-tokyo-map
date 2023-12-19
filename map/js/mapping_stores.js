@@ -6,10 +6,6 @@ const colorScale = d3
     .domain(shopData[0].genre)
     .range(shopData[0].color);
 
-// 現在の透明度と半径を保持するグローバル変数
-let currentOpacity = 0.1; // 初期値
-let currentRadius = 8; // 初期値
-
 const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
     // ジャンルに基づいてソートする関数
     function sortByGenre(a, b) {
