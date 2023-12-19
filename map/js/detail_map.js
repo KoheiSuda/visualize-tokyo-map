@@ -1,6 +1,9 @@
-import { genre } from "./genre.js";
-import { mapping_stores } from "./mapping_stores.js";
+import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { projection } from "./projection.js";
+import { choice_genres } from "./genre.js";
+
+let detailMap
+let gd
 
 // Leaflet マップにカスタムコントロールとしてボタンを追加する関数
 function addBackToD3MapButton(map) {
@@ -43,7 +46,7 @@ function switchToD3Map() {
     window.location.reload();
 }
 
-function detail_map(click_lon, click_lat, stores, choice_genres) {
+function detail_map(click_lon, click_lat, stores) {
     // 既存の地図コンテナを取得または新しく作成
     let mapContainer = document.getElementById("map");
     if (!mapContainer) {
@@ -57,7 +60,7 @@ function detail_map(click_lon, click_lat, stores, choice_genres) {
     }
 
     // 新しい地図インスタンスを初期化
-    let detailMap = L.map("map").setView([click_lat, click_lon], 15);
+    detailMap = L.map("map").setView([click_lat, click_lon], 15);
 
     // OSMタイルレイヤーを追加
     L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
@@ -70,14 +73,33 @@ function detail_map(click_lon, click_lat, stores, choice_genres) {
     // D3.js で SVG レイヤーを選択
     var svg = d3.select("#map").select("svg");
 
-    projection;
+    gd = svg.append("g")
 
-    var g = svg.append("g");
-    var maptype = "detail";
-    genre(g, maptype);
+    // zoomイベントハンドラを作成
+    const zoomed = (event) => {
+        g.attr("transform", event.transform);
+    };
 
+    // zoom機能を初期化
+    const zoom = d3
+        .zoom()
+        .scaleExtent([1, 8])
+        .translateExtent([
+            [0, 0],
+            [width, height],
+        ])
+        .on("zoom", zoomed);
+
+    // SVG要素にzoomイベントハンドラを適用
+    svg.call(zoom);
+    mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
+    // マップがズームまたはドラッグされたときに発生するイベントをリッスン
+    detailMap.on('moveend', function() {
+        console.log(choice_genres);
+        mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
+    });
     // ボタンを追加
     addBackToD3MapButton(detailMap);
 }
 
-export { detail_map };
+export { detail_map, detailMap, gd };
