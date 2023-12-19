@@ -6,8 +6,13 @@ const colorScale = d3
     .domain(shopData[0].genre)
     .range(shopData[0].color);
 
+// 現在の透明度と半径を保持するグローバル変数
+let currentOpacity = 0.1; // 初期値
+let currentRadius = 8; // 初期値
+
 const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
     const filteredStores = stores.filter((store) => choice_genres[store.genre]);
+
     const circles = g
         .selectAll("circle.store")
         .data(filteredStores, (d) => d.id); // Assuming each store has a unique 'id' property
@@ -18,8 +23,8 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         .attr("class", "store")
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
-        .attr("r", 8) // 点の半径
-        .attr("opacity", 0.1) // 点の透明度
+        .attr("r", currentRadius) // 点の半径
+        .attr("opacity", currentOpacity) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .style("pointer-events", "none") // ポインターイベントを無視させる
         .merge(circles); // For updating existing circles if needed
@@ -31,13 +36,13 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
     radInput.addEventListener("input", updateRadius);
 
     function updateOpacity() {
-        const newOpacity = opaInput.value / 100; // range inputの値は0から48なので、0から1の範囲に正規化
-        d3.selectAll("circle.store").attr("opacity", newOpacity);
+        currentOpacity = opaInput.value / 100; // range inputの値は0から48なので、0から1の範囲に正規化
+        d3.selectAll("circle.store").attr("opacity", currentOpacity);
     }
 
     function updateRadius() {
-        const newRadius = radInput.value; // range inputの値をそのまま半径として使用
-        d3.selectAll("circle.store").attr("r", newRadius);
+        currentRadius = radInput.value; // range inputの値をそのまま半径として使用
+        d3.selectAll("circle.store").attr("r", currentRadius);
     }
 
     circles.exit().remove(); // Remove circles that are no longer in the data
