@@ -1,13 +1,10 @@
-import { mapping_stores } from "./mapping_stores.js";
 import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { stores } from "./main.js";
 import { shopData } from "./shopData.js";
 import { projection } from "./projection.js";
-import { detailMap, gd } from "./detail_map.js";
-import { g } from "./map.js";
 
 let choice_genres = {};
-function genre() {
+function genre_detail(g) {
     // ジャンルと色をマッピング
     var genreColorMap = {};
     for (var i = 0; i < shopData[0].genre.length; i++) {
@@ -46,13 +43,8 @@ function genre() {
                     .style("background-color", "white"); // 色を白に戻す
             }
             // 地図上の店舗を更新
-            if (detailMap !== undefined){
-                //console.log(gd);
-                mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
-            }else{
-                //console.log(g);
-                mapping_stores(stores, g, projection, choice_genres);
-            }
+            console.log(choice_genres);
+            mapping_stores_detail(stores, g, projection, choice_genres);
         });
 
     container
@@ -62,4 +54,4 @@ function genre() {
             return d;
         });
 }
-export { genre, choice_genres };
+export { genre_detail };
