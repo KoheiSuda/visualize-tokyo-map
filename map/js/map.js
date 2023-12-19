@@ -1,11 +1,11 @@
 import { mapping_stations } from "./station.js";
-import { sliderclock } from "./clock.js";
 import { genre } from "./genre.js";
 import { stores } from "./main.js";
 import { detail_map } from "./detail_map.js";
 import { width, height, projection } from "./projection.js";
 
 let g;
+let maptype;
 
 const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     projection;
@@ -61,15 +61,14 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
             click_lon = coords[0]; // 経度
             click_lat = coords[1]; // 緯度
             console.log("Latitude:", click_lat, "Longitude:", click_lon); // 緯度と経度をコンソールに表示
-            detail_map(click_lon, click_lat, stores, {});
+            detail_map(click_lon, click_lat, stores);
         });
-
     states.append("title").text((d) => d.properties.nam_ja);
 
     // 駅を表示する
     mapping_stations(stations, station_lines, g, projection);
 
-    genre(g);
+    genre();
 
     // zoomイベントハンドラを作成
     const zoomed = (event) => {
