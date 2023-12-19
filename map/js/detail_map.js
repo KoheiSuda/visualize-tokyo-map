@@ -74,6 +74,7 @@ function detail_map(click_lon, click_lat, stores) {
     // D3.js で SVG レイヤーを選択
     var svg = d3.select("#map").select("svg");
 
+
     gd = svg.append("g")
 
     // zoomイベントハンドラを作成

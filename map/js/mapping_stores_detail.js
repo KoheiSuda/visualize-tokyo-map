@@ -14,11 +14,18 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
     
     // ソートを適用
     stores.sort(sortByGenre);
-    
+
     const filteredStores = stores.filter((store) => choice_genres[store.genre][0]);
     const circles = g
         .selectAll("circle.store")
         .data(filteredStores, (d) => d.id); // Assuming each store has a unique 'id' property
+
+    const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
+        .style("opacity", 0);
+    
     circles
         .enter()
         .append("circle")
@@ -36,7 +43,18 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .attr("r", 5) // 点の半径
         .attr("fill-opacity", 1) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
-        
+        .on("mouseover", function (event, d) {
+            d3.select(this).attr("fill", "red");
+            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip
+                .html(d.store_name)
+                .style("left", event.pageX + "px") // カーソルの右側に表示
+                .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
+        })				
+        .on("mouseout", function () {
+            d3.select(this).attr("fill", map_color);
+            tooltip.transition().duration(500).style("opacity", 0);
+        })
         .merge(circles); // For updating existing circles if needed
 
     circles.exit().remove(); // Remove circles that are no longer in the data

@@ -5,7 +5,6 @@ import { detail_map } from "./detail_map.js";
 import { width, height, projection } from "./projection.js";
 
 let g;
-let maptype;
 
 const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     projection;
