@@ -33,7 +33,7 @@ df['Cleaned_Address'] = df['address'].apply(clean_address)
 df['Coordinates'] = df['Cleaned_Address'].apply(address_to_lat_lon)
 
 # 緯度と経度の列を作成
-df['Latitude'], df['Longitude'] = zip(*df['Coordinates'])
+df['Longitude'], df['Latitude'] = zip(*df['Coordinates'])
 
 # Coordinates列を削除
 df.drop('Coordinates', axis=1, inplace=True)

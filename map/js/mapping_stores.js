@@ -23,6 +23,7 @@ const mapping_stores = (stores, g, projection, choice_genres) => {
         .attr("r", 8) // 点の半径
         .attr("opacity", 0.1) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
+        .style("pointer-events", "none") // ポインターイベントを無視させる
         .merge(circles); // For updating existing circles if needed
 
     circles.exit().remove(); // Remove circles that are no longer in the data

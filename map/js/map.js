@@ -3,12 +3,11 @@ import { sliderclock } from "./clock.js";
 import { genre } from "./genre.js";
 import { stores } from "./main.js";
 import { detail_map } from "./detail_map.js";
-import { width, height, projection } from "./projection.js"
+import { width, height, projection } from "./projection.js";
 
 let g;
 
 const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
-    
     projection;
     const svg = d3
         .select("#map")
@@ -20,8 +19,6 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("stroke", "gray") // 枠線の色を黒に設定
         .attr("stroke-width", "1"); // 枠線の幅を2に設定
 
-    
-
     const path = d3.geoPath().projection(projection);
 
     g = svg.append("g");
@@ -29,6 +26,13 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     const map_color = "#ffffff"; //"#e6e6fa";
     let click_lat = -1; // 緯度
     let click_lon = -1; // 経度
+
+    // ツールチップ要素を作成
+    const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
+        .style("opacity", 0);
 
     const states = g
         .append("g")
@@ -41,10 +45,15 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
         .attr("d", path)
         .on("mouseover", function (event, d) {
             d3.select(this).attr("fill", "red");
-            //nameDisplay.text(d.properties.nam_ja); // Update the text
+            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip
+                .html(d.properties.ward_ja)
+                .style("left", event.pageX + "px") // カーソルの右側に表示
+                .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
         })
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);
+            tooltip.transition().duration(500).style("opacity", 0);
         })
         .on("dblclick", function (event) {
             const [x, y] = d3.pointer(event); // クリックされた地点のスクリーン座標

@@ -52,10 +52,6 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .attr("y1", (d) => projection(stationCoords.get(d.station_cd1))[1])
         .attr("x2", (d) => projection(stationCoords.get(d.station_cd2))[0])
         .attr("y2", (d) => projection(stationCoords.get(d.station_cd2))[1])
-        //.attr("stroke-width", 0) // Start with stroke-width 0
-        //.attr("opacity", 0) // Start with opacity 0
-        //.transition() // Start a transition
-        //.duration(1000) // Last for 1 second
         .attr("stroke", (d) => customColors[d.line_cd] || "black") // Default to black if line_cd is not in customColors
         .attr("stroke-width", 2) // End with stroke-width 2
         .attr("opacity", 0.2) // End with opacity 0.8
