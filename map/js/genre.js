@@ -1,12 +1,11 @@
 import { mapping_stores } from "./mapping_stores.js";
 import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { stores } from "./main.js";
-import { shopData } from "./shopData.js";
 import { projection } from "./projection.js";
 import { detailMap, gd } from "./detail_map.js";
 import { g } from "./map.js";
 
-let choice_genres = {};
+
 let order = 0;
 
 function genre() {
@@ -70,4 +69,4 @@ function genre() {
             return d;
         });
 }
-export { genre, choice_genres };
+export { genre };

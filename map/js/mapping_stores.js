@@ -1,5 +1,3 @@
-import { shopData } from "./shopData.js";
-
 // Create a color mapping function
 const colorScale = d3
     .scaleOrdinal()

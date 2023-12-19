@@ -1,6 +1,5 @@
 import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { projection } from "./projection.js";
-import { choice_genres } from "./genre.js";
 
 let detailMap
 let gd
@@ -47,6 +46,12 @@ function switchToD3Map() {
 }
 
 function detail_map(click_lon, click_lat, stores) {
+    const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
+        .style("opacity", 0);
+
     // 既存の地図コンテナを取得または新しく作成
     let mapContainer = document.getElementById("map");
     if (!mapContainer) {
@@ -97,6 +102,7 @@ function detail_map(click_lon, click_lat, stores) {
     mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     // マップがズームまたはドラッグされたときに発生するイベントをリッスン
     detailMap.on('moveend', function() {
+        tooltip.transition().duration(500).style("opacity", 0);
         mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     });
     // ボタンを追加
