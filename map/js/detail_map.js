@@ -46,11 +46,7 @@ function switchToD3Map() {
 }
 
 function detail_map(click_lon, click_lat, stores) {
-    const tooltip = d3
-        .select("body")
-        .append("div")
-        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
-        .style("opacity", 0);
+    
 
     // 既存の地図コンテナを取得または新しく作成
     let mapContainer = document.getElementById("map");
@@ -66,7 +62,8 @@ function detail_map(click_lon, click_lat, stores) {
     }
 
     // 新しい地図インスタンスを初期化
-    detailMap = L.map("map").setView([click_lat, click_lon], 14);
+    var initialZoomLevel = 14;
+    detailMap = L.map("map").setView([click_lat, click_lon], initialZoomLevel);
 
     // OSMタイルレイヤーを追加
     L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
@@ -83,9 +80,9 @@ function detail_map(click_lon, click_lat, stores) {
     gd = svg.append("g")
 
     // zoomイベントハンドラを作成
-    const zoomed = (event) => {
+    /*const zoomed = (event) => {
         g.attr("transform", event.transform);
-    };
+    };*/
 
     // zoom機能を初期化
     const zoom = d3
@@ -95,10 +92,10 @@ function detail_map(click_lon, click_lat, stores) {
             [0, 0],
             [width, height],
         ])
-        .on("zoom", zoomed);
+        //.on("zoom", zoomed);
 
     // SVG要素にzoomイベントハンドラを適用
-    svg.call(zoom);
+    //svg.call(zoom);
     mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     // マップがズームまたはドラッグされたときに発生するイベントをリッスン
     detailMap.on('moveend', function() {

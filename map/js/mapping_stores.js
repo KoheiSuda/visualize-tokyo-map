@@ -49,6 +49,7 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         currentRadius = radInput.value; // range inputの値をそのまま半径として使用
         d3.selectAll("circle.store").attr("r", currentRadius);
     }
+    //console.log(currentOpacity);
 
     circles.exit().remove(); // Remove circles that are no longer in the data
     analogTime(

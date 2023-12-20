@@ -27,12 +27,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     let click_lat = -1; // 緯度
     let click_lon = -1; // 経度
 
-    // ツールチップ要素を作成
-    const tooltip = d3
-        .select("body")
-        .append("div")
-        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
-        .style("opacity", 0);
+
 
     const states = g
         .append("g")

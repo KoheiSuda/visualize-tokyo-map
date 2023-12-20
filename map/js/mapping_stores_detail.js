@@ -20,12 +20,6 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .selectAll("circle.store")
         .data(filteredStores, (d) => d.id); // Assuming each store has a unique 'id' property
 
-    const tooltip = d3
-        .select("body")
-        .append("div")
-        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
-        .style("opacity", 0);
-
     circles
         .enter()
         .append("circle")

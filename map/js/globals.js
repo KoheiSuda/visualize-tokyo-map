@@ -27,3 +27,13 @@ const toggleButtonDisplay = (buttonId, shouldDisplay) => {
         button.style.display = shouldDisplay ? "block" : "none";
     }
 };
+
+let tooltip;
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip") // CSSでスタイリング可能なクラス名
+        .style("opacity", 0);
+});
