@@ -14,9 +14,10 @@ const getData = async () => {
     const izakaya = await d3.csv("./data/izakaya_updated.csv");
     const cafe = await d3.csv("./data/cafe_updated.csv");
     const gas = await d3.csv("./data/gas_updated.csv");
+    const clinic = await d3.csv("./data/dental_updated.csv");
 
     // 店舗データを結合する
-    stores = ramen.concat(izakaya).concat(cafe).concat(gas);
+    stores = ramen.concat(izakaya).concat(cafe).concat(gas).concat(clinic);
 
     const topojsonData = topojson.feature(japanJson, japanJson.objects.tokyo);
 
