@@ -176,7 +176,7 @@ drawClock();
 
 d3.select(self.frameElement).style("height", height + "px");
 
-window.analogTime = function(g, currentTime, currentDayIndex, count) {
+window.analogTime = function (g, currentTime, currentDayIndex, count) {
     function parseBusinessHours(businessHoursStr) {
         const businessHoursList = businessHoursStr.split(",");
         const result = businessHoursList.map((businessHours) => {
@@ -216,7 +216,7 @@ window.analogTime = function(g, currentTime, currentDayIndex, count) {
         }
         return isWithinBusinessHours ? null : "none";
     });
-}
+};
 
 var drag = d3.drag().on("drag", function (event, d) {
     var dx = event.x,
