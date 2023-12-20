@@ -198,7 +198,7 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
     }
 
     //currentDayIndex = mod((count / 2) | 0, 7);
-    currentDayIndex = mod(((setting_count - count) / 2) | 0, 7);
+    currentDayIndex = mod((Math.abs(setting_count - count) / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
     AMPM = count % 2 === 0 ? "AM" : "PM";
