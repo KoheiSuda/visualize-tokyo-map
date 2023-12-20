@@ -42,9 +42,14 @@ const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 function drawClock() {
     //create all the clock elements
     handData[0].value = 0;
-    currentDayIndex = 0;
+    //currentDayIndex = 0;
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
+    //document
+    //    .getElementById("day-select")
+    //    .addEventListener("change", function () {
+    //        setting_count = parseInt(this.value);
+    //    });
     AMPM = count % 2 === 0 ? "AM" : "PM";
     let timedisplay;
     if (currentTime % 1 === 0) {
@@ -202,8 +207,8 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
         return i % j < 0 ? (i % j) + 0 + (j < 0 ? -j : j) : (i % j) + 0;
     }
 
-    //currentDayIndex = mod((count / 2) | 0, 7);
-    currentDayIndex = mod((Math.abs(setting_count - count) / 2) | 0, 7);
+    currentDayIndex = mod((count / 2) | 0, 7);
+    //currentDayIndex = mod((Math.abs(setting_count - count) / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
     AMPM = count % 2 === 0 ? "AM" : "PM";

@@ -146,16 +146,6 @@ li div {
 #show-stations:active {
     transform: scale(0.95); /* クリック時に少し縮小 */
 }
-#parameter {
-    position: fixed; /* ページのスクロールに関係なく常に同じ位置に配置 */
-    z-index: 1000; /* 他の要素より上に表示 */
-    bottom: 10px;
-    right: 20%;
-    display: flex; /* フレックスボックスレイアウトを適用 */
-    flex-direction: column; /* 子要素を縦方向に配置 */
-    margin-bottom: 10px;
-    margin-left: 10px;
-}
 
 .tooltip {
     position: absolute;
@@ -184,6 +174,17 @@ li div {
     position: absolute;
     bottom: 5%;
     left: 5%;
+}
+
+#parameter {
+    position: fixed; /* ページのスクロールに関係なく常に同じ位置に配置 */
+    z-index: 1000; /* 他の要素より上に表示 */
+    bottom: 10px;
+    right: 20%;
+    display: flex; /* フレックスボックスレイアウトを適用 */
+    flex-direction: column; /* 子要素を縦方向に配置 */
+    margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 #parameter input[type="range"]::-moz-range-thumb {

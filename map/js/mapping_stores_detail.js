@@ -4,6 +4,57 @@ const colorScale = d3
     .domain(shopData[0].genre)
     .range(shopData[0].color);
 
+// 営業時間を表示するための処理をする関数
+function formatBusinessHours(businessHoursStr) {
+    try {
+        const validJsonStr = businessHoursStr.replace(/'/g, '"');
+        const businessHours = JSON.parse(validJsonStr);
+
+        const days = ["月", "火", "水", "木", "金", "土", "日"];
+        let formattedHours = businessHours.map((dayHours, index) => {
+            let sortedHours = dayHours
+                .map((timeRange) => {
+                    const [start, end] = timeRange
+                        .split("~")
+                        .map((time) => time.trim());
+                    return { start, end };
+                })
+                .sort((a, b) => a.start.localeCompare(b.start));
+
+            let mergedHours = mergeTimeRanges(sortedHours);
+
+            return (
+                days[index] +
+                "：" +
+                mergedHours
+                    .map((range) => `${range.start}~${range.end}`)
+                    .join(", ")
+            );
+        });
+
+        return formattedHours.join("<br/>");
+    } catch (e) {
+        console.error("Error parsing business hours:", e);
+        return "";
+    }
+}
+
+function mergeTimeRanges(timeRanges) {
+    let mergedRanges = [];
+    let lastRange = null;
+
+    timeRanges.forEach((range) => {
+        if (lastRange && lastRange.end === range.start) {
+            lastRange.end = range.end;
+        } else {
+            mergedRanges.push(range);
+            lastRange = range;
+        }
+    });
+
+    return mergedRanges;
+}
+
 const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
     // ジャンルに基づいてソートする関数
     function sortByGenre(a, b) {
@@ -40,11 +91,16 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .attr("fill-opacity", currentOpacity) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .on("mouseover", function (event, d) {
-            console.log("mouseover");
             d3.select(this).attr("fill", "black");
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip
-                .html(d.genre + "<br/>" + d.store_name)
+                .html(
+                    d.genre +
+                        "<br/>" +
+                        d.store_name +
+                        "<br/>" +
+                        formatBusinessHours(d.business_hours)
+                )
                 .style("left", event.pageX + "px") // カーソルの右側に表示
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
         })
