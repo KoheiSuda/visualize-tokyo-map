@@ -24,9 +24,33 @@ var handData = [
     },
 ];
 
+var count = 0;
+var setting_count = 0;
+let tmp;
+
+const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+];
+const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 function drawClock() {
     //create all the clock elements
-    updateData(); //draw them in the correct starting position
+    handData[0].value = 0;
+    document.getElementById("currentDay").textContent =
+        en_daysOfWeek[currentDayIndex];
+    document
+        .getElementById("day-select")
+        .addEventListener("change", function () {
+            setting_count = parseInt(this.value);
+        });
+    time = document.getElementById("AMPM").textContent =
+        count % 2 === 0 ? "AM" : "PM";
 
     var svg = d3
         .select("#clock")
@@ -148,35 +172,11 @@ function moveHands() {
         });
 }
 
-var count = 0;
-let tmp;
-//let currentTime;
-
-//let currentDayIndex = 0; // 0 = Sunday
-const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-];
-const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-function updateData() {
-    handData[0].value = 0;
-    document.getElementById("currentDay").textContent =
-        en_daysOfWeek[currentDayIndex];
-    time = document.getElementById("AMPM").textContent =
-        count % 2 === 0 ? "AM" : "PM";
-}
-
 drawClock();
 
 d3.select(self.frameElement).style("height", height + "px");
 
-window.analogTime = function(g, currentTime, currentDayIndex, count) {
+window.analogTime = function (g, currentTime, currentDayIndex, count) {
     function parseBusinessHours(businessHoursStr) {
         const businessHoursList = businessHoursStr.split(",");
         const result = businessHoursList.map((businessHours) => {
@@ -197,7 +197,8 @@ window.analogTime = function(g, currentTime, currentDayIndex, count) {
         return i % j < 0 ? (i % j) + 0 + (j < 0 ? -j : j) : (i % j) + 0;
     }
 
-    currentDayIndex = mod((count / 2) | 0, 7);
+    //currentDayIndex = mod((count / 2) | 0, 7);
+    currentDayIndex = mod(((setting_count - count) / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
     AMPM = count % 2 === 0 ? "AM" : "PM";
@@ -216,7 +217,7 @@ window.analogTime = function(g, currentTime, currentDayIndex, count) {
         }
         return isWithinBusinessHours ? null : "none";
     });
-}
+};
 
 var drag = d3.drag().on("drag", function (event, d) {
     var dx = event.x,

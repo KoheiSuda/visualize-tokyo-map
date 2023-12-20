@@ -27,8 +27,6 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     let click_lat = -1; // 緯度
     let click_lon = -1; // 経度
 
-
-
     const states = g
         .append("g")
         .attr("fill", map_color)
