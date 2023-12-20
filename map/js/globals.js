@@ -9,13 +9,7 @@ var currentDayIndex = 0; // 0 = Sunday
 let choice_genres = {};
 var shopData = [
     {
-        genre: [
-            "ラーメン",
-            "居酒屋",
-            "カフェ",
-            "クリニック",
-            "ガソリンスタンド",
-        ],
+        genre: ["ラーメン", "居酒屋", "カフェ", "歯医者", "ガソリンスタンド"],
         color: ["#cc0000", "#008000", "#eedcb3", "#0067C0", "#A1A3A6"],
     },
 ];
