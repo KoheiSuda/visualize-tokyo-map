@@ -57,5 +57,6 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         currentDayIndex,
         count
     );
+    //console.log(currentTime);
 };
 export { mapping_stores };

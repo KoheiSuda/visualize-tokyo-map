@@ -3,7 +3,7 @@ var currentOpacity = 0.1; // 初期値
 var currentRadius = 8; // 初期値
 
 // 現在の時間と曜日を保持するグローバル変数
-var currentTime;
+var currentTime = 0; // 0 = 0:00 AM
 var currentDayIndex = 0; // 0 = Sunday
 
 let choice_genres = {};
