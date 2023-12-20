@@ -148,19 +148,17 @@ function moveHands() {
         });
 }
 
-var count = 0;
+var count = 42; // 時間を巻き戻すとバグるから三周分先に回しておく
 let tmp;
-//let currentTime;
 
-//let currentDayIndex = 0; // 0 = Sunday
 const daysOfWeek = [
-    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
+    "Sunday",
 ];
 const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -201,8 +199,14 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
     AMPM = count % 2 === 0 ? "AM" : "PM";
+    let timedisplay;
+    if (currentTime % 1 === 0) {
+        timedisplay = (currentTime % 12).toString() + ":00";
+    } else {
+        timedisplay = ((currentTime - 0.5) % 12).toString() + ":30";
+    }
     time = document.getElementById("AMPM").textContent =
-        count % 2 === 0 ? "AM" : "PM";
+        AMPM + " " + timedisplay;
     g.attr("display", (d) => {
         const businessHoursList = parseBusinessHours(
             d[daysOfWeek[currentDayIndex]]
@@ -227,9 +231,9 @@ var drag = d3.drag().on("drag", function (event, d) {
     angle += 90; // 0度を12時の方向にする
     tmp = d.value;
     d.value = ((angle + 360) % 360) / 30;
-    if (tmp - d.value === 11.5) {
+    if (tmp - d.value >= 10) {
         count += 1;
-    } else if (tmp - d.value === -11.5) {
+    } else if (tmp - d.value <= -10) {
         count -= 1;
     }
     currentTime = d.value + (count % 2) * 12;

@@ -27,8 +27,6 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
     let click_lat = -1; // 緯度
     let click_lon = -1; // 経度
 
-
-
     const states = g
         .append("g")
         .attr("fill", map_color)
@@ -45,7 +43,7 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
                 .html(d.properties.ward_ja)
                 .style("left", event.pageX + "px") // カーソルの右側に表示
                 .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
-            createGraph(d.properties.ward_ja, 0, 0);
+            createGraph(d.properties.ward_ja);
         })
         .on("mouseout", function () {
             d3.select(this).attr("fill", map_color);

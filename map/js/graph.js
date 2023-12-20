@@ -6,7 +6,7 @@ for (let i = 0; i < shopData[0].genre.length; i++) {
     genreColorMap[shopData[0].genre[i]] = shopData[0].color[i];
 }
 
-function createGraph(cityName, currentTime, currentDayIndex) {
+function createGraph(cityName) {
     let data = stores.filter((store) =>
         store.Cleaned_Address.includes(cityName)
     );

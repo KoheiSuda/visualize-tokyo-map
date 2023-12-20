@@ -125,7 +125,7 @@ li div {
 #Time {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    width: 70%;
     margin-top: 30px;
     /* font-family: "Graduate", cursive; */
     font-family: Arial, sans-serif;
