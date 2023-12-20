@@ -176,7 +176,7 @@ drawClock();
 
 d3.select(self.frameElement).style("height", height + "px");
 
-function analogTime(g, currentTime, currentDayIndex, count) {
+window.analogTime = function(g, currentTime, currentDayIndex, count) {
     function parseBusinessHours(businessHoursStr) {
         const businessHoursList = businessHoursStr.split(",");
         const result = businessHoursList.map((businessHours) => {

@@ -51,5 +51,11 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
     }
 
     circles.exit().remove(); // Remove circles that are no longer in the data
+    analogTime(
+        d3.selectAll("circle.store"),
+        currentTime,
+        currentDayIndex,
+        count
+    );
 };
 export { mapping_stores };
