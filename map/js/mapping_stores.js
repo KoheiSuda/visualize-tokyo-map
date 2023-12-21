@@ -4,7 +4,9 @@ const colorScale = d3
     .domain(shopData[0].genre)
     .range(shopData[0].color);
 
+
 const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
+    detail = 0;
     // ジャンルに基づいてソートする関数
     function sortByGenre(a, b) {
         return choice_genres[a.genre][1] - choice_genres[b.genre][1];

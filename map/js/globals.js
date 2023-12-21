@@ -5,6 +5,7 @@ var currentRadius = 2; // 初期値
 // 現在の時間と曜日を保持するグローバル変数
 var currentTime = 0; // 0 = 0:00 AM
 var currentDayIndex = 0; // 0 = Sunday
+var detail = 0;
 
 let choice_genres = {};
 var shopData = [
@@ -49,3 +50,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         });
     }
 });
+
+// Create a color mapping function
+const colorScale = d3
+    .scaleOrdinal()
+    .domain(shopData[0].genre)
+    .range(shopData[0].color);
