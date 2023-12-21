@@ -33,7 +33,7 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         .attr("stroke", "none") // 枠線を表示しない
         .style("pointer-events", "none") // ポインターイベントを無視させる
         .merge(circles); // For updating existing circles if needed
-
+    console.log(currentRadius);
     
 
     circles.exit().remove(); // Remove circles that are no longer in the data
@@ -43,6 +43,6 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         currentDayIndex,
         count
     );
-    console.log(currentTime);
+    //console.log(currentTime);
 };
 export { mapping_stores };

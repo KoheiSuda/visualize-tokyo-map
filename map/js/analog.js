@@ -238,7 +238,9 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
                     }
                 }
                 return isWithinBusinessHours ? currentOpacity : 0;
-            });
+            })
+            .attr("r", currentRadius);
+            
     } else {
         g.attr("opacity", (d) => {
             const businessHoursList = parseBusinessHours(
@@ -252,7 +254,9 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
                 }
             }
             return isWithinBusinessHours ? currentOpacity : 0;
-        });
+        
+        })
+        .attr("r", currentRadius);
     }
     const opaInput = document.getElementById("opa");
     const radInput = document.getElementById("rad");
