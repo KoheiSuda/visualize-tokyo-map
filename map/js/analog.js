@@ -224,20 +224,20 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
         AMPM + " " + timedisplay;
     if (autoplay) {
         g.transition()
-        .duration(1000)
-        .attr("opacity", (d) => {
-            const businessHoursList = parseBusinessHours(
-                d[daysOfWeek[currentDayIndex]]
-            );
-            let isWithinBusinessHours = false;
-            for (const { start, end } of businessHoursList) {
-                if (start <= currentTime && currentTime < end) {
-                    isWithinBusinessHours = true;
-                    break;
+            .duration(1000)
+            .attr("opacity", (d) => {
+                const businessHoursList = parseBusinessHours(
+                    d[daysOfWeek[currentDayIndex]]
+                );
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
                 }
-            }
-            return isWithinBusinessHours ? currentOpacity : 0;
-        });
+                return isWithinBusinessHours ? currentOpacity : 0;
+            });
     } else {
         g.attr("display", (d) => {
             const businessHoursList = parseBusinessHours(
@@ -361,7 +361,7 @@ function updateDayIndex() {
                 count = 47;
             }
             break;
-        case "Thursday":
+        case "Thu":
             if (count % 2 === 0) {
                 count = 48;
             } else {
