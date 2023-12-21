@@ -239,7 +239,7 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
                 return isWithinBusinessHours ? currentOpacity : 0;
             });
     } else {
-        g.attr("display", (d) => {
+        g.attr("opacity", (d) => {
             const businessHoursList = parseBusinessHours(
                 d[daysOfWeek[currentDayIndex]]
             );
@@ -250,9 +250,48 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
                     break;
                 }
             }
-            return isWithinBusinessHours ? null : "none";
+            return isWithinBusinessHours ? currentOpacity : 0;
         });
     }
+    const opaInput = document.getElementById("opa");
+    const radInput = document.getElementById("rad");
+
+    opaInput.addEventListener("input", updateOpacity);
+    radInput.addEventListener("input", updateRadius);
+    function updateOpacity() {
+        currentOpacity = opaInput.value / 100; // range inputの値は0から48なので、0から1の範囲に正規化
+        d3.selectAll("circle.store")
+            .filter((d) => {
+                const businessHoursList = parseBusinessHours(d[daysOfWeek[currentDayIndex]]);
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
+                }
+                return isWithinBusinessHours;
+            })
+            .attr("opacity", currentOpacity);
+    }
+    
+    function updateRadius() {
+        currentRadius = radInput.value; // range inputの値をそのまま半径として使用
+        d3.selectAll("circle.store")
+            .filter((d) => {
+                const businessHoursList = parseBusinessHours(d[daysOfWeek[currentDayIndex]]);
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
+                }
+                return isWithinBusinessHours;
+            })
+            .attr("r", currentRadius);
+    }
+    
 };
 
 var drag = d3.drag().on("drag", function (event, d) {
