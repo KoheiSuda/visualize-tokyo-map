@@ -206,7 +206,6 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
 
         return result;
     }
-    
 
     currentDayIndex = mod((count / 2) | 0, 7);
     //console.log(count);
@@ -223,19 +222,37 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
     }
     time = document.getElementById("AMPM").textContent =
         AMPM + " " + timedisplay;
-    g.attr("display", (d) => {
-        const businessHoursList = parseBusinessHours(
-            d[daysOfWeek[currentDayIndex]]
-        );
-        let isWithinBusinessHours = false;
-        for (const { start, end } of businessHoursList) {
-            if (start <= currentTime && currentTime < end) {
-                isWithinBusinessHours = true;
-                break;
+    if (autoplay) {
+        g.transition()
+            .duration(1000)
+            .attr("opacity", (d) => {
+                const businessHoursList = parseBusinessHours(
+                    d[daysOfWeek[currentDayIndex]]
+                );
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
+                }
+                return isWithinBusinessHours ? currentOpacity : 0;
+            });
+    } else {
+        g.attr("display", (d) => {
+            const businessHoursList = parseBusinessHours(
+                d[daysOfWeek[currentDayIndex]]
+            );
+            let isWithinBusinessHours = false;
+            for (const { start, end } of businessHoursList) {
+                if (start <= currentTime && currentTime < end) {
+                    isWithinBusinessHours = true;
+                    break;
+                }
             }
-        }
-        return isWithinBusinessHours ? null : "none";
-    });
+            return isWithinBusinessHours ? null : "none";
+        });
+    }
 };
 
 var drag = d3.drag().on("drag", function (event, d) {
@@ -326,39 +343,51 @@ function updateDayIndex() {
         case "Monday":
             if (count % 2 === 0) {
                 count = 42;
-            }else{
+            } else {
                 count = 43;
             }
             break;
         case "Tuesday":
             if (count % 2 === 0) {
                 count = 44;
-            }else { count = 45; }
+            } else {
+                count = 45;
+            }
             break;
         case "Wednesday":
             if (count % 2 === 0) {
                 count = 46;
-            }else { count = 47; }
+            } else {
+                count = 47;
+            }
             break;
         case "Thursday":
             if (count % 2 === 0) {
                 count = 48;
-            }else { count = 49; }
+            } else {
+                count = 49;
+            }
             break;
         case "Friday":
             if (count % 2 === 0) {
                 count = 50;
-            }else { count = 51; }
+            } else {
+                count = 51;
+            }
             break;
         case "Saturday":
             if (count % 2 === 0) {
                 count = 52;
-            }else { count = 53; }
+            } else {
+                count = 53;
+            }
             break;
         case "Sunday":
             if (count % 2 === 0) {
                 count = 54;
-            }else { count = 55; }
+            } else {
+                count = 55;
+            }
             break;
     }
     analogTime(
@@ -378,5 +407,4 @@ function updateDropdown() {
     var selectedDay = daysOfWeek[mod((count / 2) | 0, 7)];
     // ドロップダウンメニューの選択を更新
     document.getElementById("daySelector").value = selectedDay;
-    
 }
