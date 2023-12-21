@@ -70,6 +70,7 @@ li div {
     border: 2px solid black; /* ボーダー */
     box-sizing: border-box; /* ボーダーを含めたサイズにする */
     cursor: pointer; /* カーソルをpointerに */
+    background-color: #ffffff;
 }
 .checkbox:active {
     transform: scale(0.95); /* クリック時に少し縮小 */

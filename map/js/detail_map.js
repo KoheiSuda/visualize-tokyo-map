@@ -16,11 +16,14 @@ function addBackToD3MapButton(map) {
                 "leaflet-bar leaflet-control leaflet-control-custom"
             );
             container.style.backgroundColor = "white";
-            container.style.width = "100px";
-            container.style.height = "30px";
+            container.style.width = "120px";
+            container.style.height = "40px";
+
+            container.style.fontSize = "20px"; // 文字の大きさを大きくする
             container.innerHTML = "Top Page";
             container.style.textAlign = "center";
             container.style.lineHeight = "30px";
+            container.style.cursor = "pointer";
 
             container.onclick = function () {
                 switchToD3Map();
