@@ -102,7 +102,8 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .attr("stroke", "gray") // Choose a color that stands out
         .attr("stroke-width", 1) // Adjust the stroke width as needed
         //.attr("r", 2) // End with radius 3
-        .attr("visibility", "hidden"); // Start hidden
+        .attr("visibility", "hidden") // Start hidden
+        .style("pointer-events", "none"); // ポインターイベントを無視させる
 
     // Bind data for lines
     const stationLines = g
@@ -118,7 +119,8 @@ const mapping_stations = (stations, station_lines, g, projection) => {
         .attr("stroke", (d) => customColors[d.line_cd] || "black") // Default to black if line_cd is not in customColors
         .attr("stroke-width", 2) // End with stroke-width 2
         .attr("opacity", 0.8) // End with opacity 0.8
-        .attr("visibility", "hidden"); // Start hidden
+        .attr("visibility", "hidden") // Start hidden
+        .style("pointer-events", "none"); // ポインターイベントを無視させる
 
     let stationsVisible = false;
     // Click event handler
