@@ -1,11 +1,7 @@
-// Create a color mapping function
-const colorScale = d3
-    .scaleOrdinal()
-    .domain(shopData[0].genre)
-    .range(shopData[0].color);
+
 
 // 営業時間を表示するための処理をする関数
-function formatBusinessHours(businessHoursStr) {
+window.formatBusinessHours = function(businessHoursStr) {
     try {
         const validJsonStr = businessHoursStr.replace(/'/g, '"');
         const businessHours = JSON.parse(validJsonStr);
@@ -56,6 +52,7 @@ function mergeTimeRanges(timeRanges) {
 }
 
 const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
+    detail = 1;
     // ジャンルに基づいてソートする関数
     function sortByGenre(a, b) {
         return choice_genres[a.genre][1] - choice_genres[b.genre][1];
@@ -90,24 +87,7 @@ const mapping_stores_detail = (stores, g, projection, choice_genres, map) => {
         .attr("r", currentRadius) // 点の半径
         .attr("fill-opacity", currentOpacity) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
-        .on("mouseover", function (event, d) {
-            d3.select(this).attr("fill", "black");
-            tooltip.transition().duration(200).style("opacity", 0.9);
-            tooltip
-                .html(
-                    d.genre +
-                        "<br/>" +
-                        d.store_name +
-                        "<br/>" +
-                        formatBusinessHours(d.business_hours)
-                )
-                .style("left", event.pageX + "px") // カーソルの右側に表示
-                .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
-        })
-        .on("mouseout", function () {
-            d3.select(this).attr("fill", (d) => colorScale(d.genre));
-            tooltip.transition().duration(500).style("opacity", 0);
-        })
+        
         .merge(circles); // For updating existing circles if needed
 
     circles.exit().remove(); // Remove circles that are no longer in the data

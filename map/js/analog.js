@@ -240,6 +240,38 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
                 return isWithinBusinessHours ? currentOpacity : 0;
             })
             .attr("r", currentRadius);
+        //console.log(detail);
+        if (detail === 1){
+            
+            g.on("mouseover", function (event, d) {
+                const businessHoursList = parseBusinessHours(d[daysOfWeek[currentDayIndex]]);
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
+                }
+                if (isWithinBusinessHours) {
+                    d3.select(this).attr("fill", "black");
+                    tooltip.transition().duration(200).style("opacity", 0.9);
+                    tooltip
+                        .html(
+                            d.genre +
+                                "<br/>" +
+                                d.store_name +
+                                "<br/>" +
+                                formatBusinessHours(d.business_hours)
+                        )
+                        .style("left", event.pageX + "px") // カーソルの右側に表示
+                        .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
+                }
+            })
+            .on("mouseout", function () {
+                d3.select(this).attr("fill", (d) => colorScale(d.genre));
+                tooltip.transition().duration(500).style("opacity", 0);
+            })
+        }
             
     } else {
         g.attr("opacity", (d) => {
@@ -257,6 +289,37 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
         
         })
         .attr("r", currentRadius);
+        if (detail === 1){
+            
+            g.on("mouseover", function (event, d) {
+                const businessHoursList = parseBusinessHours(d[daysOfWeek[currentDayIndex]]);
+                let isWithinBusinessHours = false;
+                for (const { start, end } of businessHoursList) {
+                    if (start <= currentTime && currentTime < end) {
+                        isWithinBusinessHours = true;
+                        break;
+                    }
+                }
+                if (isWithinBusinessHours) {
+                    d3.select(this).attr("fill", "black");
+                    tooltip.transition().duration(200).style("opacity", 0.9);
+                    tooltip
+                        .html(
+                            d.genre +
+                                "<br/>" +
+                                d.store_name +
+                                "<br/>" +
+                                formatBusinessHours(d.business_hours)
+                        )
+                        .style("left", event.pageX + "px") // カーソルの右側に表示
+                        .style("top", event.pageY - 28 + "px"); // カーソルの下側に表示
+                }
+            })
+            .on("mouseout", function () {
+                d3.select(this).attr("fill", (d) => colorScale(d.genre));
+                tooltip.transition().duration(500).style("opacity", 0);
+            })
+        }
     }
     const opaInput = document.getElementById("opa");
     const radInput = document.getElementById("rad");
