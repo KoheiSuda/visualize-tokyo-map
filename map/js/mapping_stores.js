@@ -34,21 +34,7 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         .style("pointer-events", "none") // ポインターイベントを無視させる
         .merge(circles); // For updating existing circles if needed
 
-    const opaInput = document.getElementById("opa");
-    const radInput = document.getElementById("rad");
-
-    opaInput.addEventListener("input", updateOpacity);
-    radInput.addEventListener("input", updateRadius);
-
-    function updateOpacity() {
-        currentOpacity = opaInput.value / 100; // range inputの値は0から48なので、0から1の範囲に正規化
-        d3.selectAll("circle.store").attr("opacity", currentOpacity);
-    }
-
-    function updateRadius() {
-        currentRadius = radInput.value; // range inputの値をそのまま半径として使用
-        d3.selectAll("circle.store").attr("r", currentRadius);
-    }
+    
 
     circles.exit().remove(); // Remove circles that are no longer in the data
     analogTime(
