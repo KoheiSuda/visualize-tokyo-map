@@ -38,6 +38,10 @@ const daysOfWeek = [
     "Sunday",
 ];
 const en_daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+function mod(i, j) {
+    // あまりがいつも正になるようにする
+    return i % j < 0 ? (i % j) + 0 + (j < 0 ? -j : j) : (i % j) + 0;
+}
 
 function drawClock() {
     //create all the clock elements
@@ -202,12 +206,11 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
 
         return result;
     }
-    function mod(i, j) {
-        // あまりがいつも正になるようにする
-        return i % j < 0 ? (i % j) + 0 + (j < 0 ? -j : j) : (i % j) + 0;
-    }
+    
 
     currentDayIndex = mod((count / 2) | 0, 7);
+    //console.log(count);
+    updateDropdown();
     //currentDayIndex = mod((Math.abs(setting_count - count) / 2) | 0, 7);
     document.getElementById("currentDay").textContent =
         en_daysOfWeek[currentDayIndex];
@@ -279,6 +282,7 @@ function startAutoPlay() {
                 count += 1; // Increase the count for AM/PM
                 if (count % 2 === 0) {
                     currentDayIndex = (currentDayIndex + 1) % 7; // Increase the day index
+                    //updateDropdown();
                 }
             }
             currentTime = handData[0].value + (count % 2) * 12;
@@ -311,4 +315,68 @@ function changeBackgroundImage(currentTime) {
     }
     var clockSvg = document.getElementById("clock-svg");
     clockSvg.style.backgroundImage = "url(" + imageUrl + ")";
+}
+
+function updateDayIndex() {
+    // ドロップダウンメニューから選択された曜日を取得
+    var selectedDay = document.getElementById("daySelector").value;
+
+    // 曜日に対応する番号を割り当て
+    switch (selectedDay) {
+        case "Monday":
+            if (count % 2 === 0) {
+                count = 42;
+            }else{
+                count = 43;
+            }
+            break;
+        case "Tuesday":
+            if (count % 2 === 0) {
+                count = 44;
+            }else { count = 45; }
+            break;
+        case "Wednesday":
+            if (count % 2 === 0) {
+                count = 46;
+            }else { count = 47; }
+            break;
+        case "Thursday":
+            if (count % 2 === 0) {
+                count = 48;
+            }else { count = 49; }
+            break;
+        case "Friday":
+            if (count % 2 === 0) {
+                count = 50;
+            }else { count = 51; }
+            break;
+        case "Saturday":
+            if (count % 2 === 0) {
+                count = 52;
+            }else { count = 53; }
+            break;
+        case "Sunday":
+            if (count % 2 === 0) {
+                count = 54;
+            }else { count = 55; }
+            break;
+    }
+    analogTime(
+        d3.selectAll("circle.store"),
+        currentTime,
+        currentDayIndex,
+        count
+    );
+
+    // 確認のためにコンソールに出力
+    console.log(count);
+}
+
+function updateDropdown() {
+    //console.log(count);
+    // 曜日を取得
+    var selectedDay = daysOfWeek[mod((count / 2) | 0, 7)];
+    // ドロップダウンメニューの選択を更新
+    document.getElementById("daySelector").value = selectedDay;
+    
 }
