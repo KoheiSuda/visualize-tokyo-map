@@ -23,7 +23,7 @@ var handData = [
         scale: hourScale,
     },
 ];
-
+var drag = 0;
 var count = 0;
 var setting_count = 0;
 let tmp;
@@ -222,7 +222,7 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
     }
     time = document.getElementById("AMPM").textContent =
         AMPM + " " + timedisplay;
-    if (autoplay) {
+    if (autoplay && drag === 0) {
         g.transition()
             .duration(1000)
             .attr("opacity", (d) => {
@@ -295,6 +295,7 @@ window.analogTime = function (g, currentTime, currentDayIndex, count) {
 };
 
 var drag = d3.drag().on("drag", function (event, d) {
+    drag = 1;
     var dx = event.x,
         dy = event.y,
         angle = Math.atan2(dy, dx) * (180 / Math.PI);
@@ -319,6 +320,7 @@ var drag = d3.drag().on("drag", function (event, d) {
     );
     speed = 1000;
     changeBackgroundImage(currentTime);
+    drag = 0;
 });
 d3.select(".hour-hand").call(drag);
 
