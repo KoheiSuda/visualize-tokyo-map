@@ -28,7 +28,7 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         .attr("cx", (d) => projection([+d.Longitude, +d.Latitude])[0])
         .attr("cy", (d) => projection([+d.Longitude, +d.Latitude])[1])
         .attr("r", currentRadius) // 点の半径
-        .attr("opacity", currentOpacity) // 点の透明度
+        .attr("opacity", 0) // 点の透明度
         .attr("fill", (d) => colorScale(d.genre)) // 点の色
         .attr("stroke", "none") // 枠線を表示しない
         .style("pointer-events", "none") // ポインターイベントを無視させる
@@ -49,7 +49,6 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         currentRadius = radInput.value; // range inputの値をそのまま半径として使用
         d3.selectAll("circle.store").attr("r", currentRadius);
     }
-    //console.log(currentOpacity);
 
     circles.exit().remove(); // Remove circles that are no longer in the data
     analogTime(
@@ -58,6 +57,6 @@ const mapping_stores = (stores, g, projection, choice_genres, maptype) => {
         currentDayIndex,
         count
     );
-    //console.log(currentTime);
+    console.log(currentTime);
 };
 export { mapping_stores };
