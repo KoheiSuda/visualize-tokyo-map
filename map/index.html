@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>D3 test</title>
+        <title>Tokyo Business Hours</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="css/sanitize.css" />
@@ -64,7 +64,7 @@
                         <option value="12">Sunday</option>
                     </select>
                 </div>-->
-                <select id="daySelector" onchange="updateDayIndex()">
+                <!-- <select id="daySelector" onchange="updateDayIndex()">
                     <option>Monday</option>
                     <option>Tuesday</option>
                     <option>Wednesday</option>
@@ -72,9 +72,18 @@
                     <option>Friday</option>
                     <option>Saturday</option>
                     <option>Sunday</option>
-                </select>
+                </select> -->
 
                 <div id="Time">
+                    <select id="daySelector" onchange="updateDayIndex()">
+                        <option>Mon</option>
+                        <option>Tue</option>
+                        <option>Wed</option>
+                        <option>Thu</option>
+                        <option>Fri</option>
+                        <option>Sat</option>
+                        <option>Sun</option>
+                    </select>
                     <div id="currentDay"></div>
                     <div id="AMPM"></div>
                 </div>

@@ -340,21 +340,21 @@ function updateDayIndex() {
 
     // 曜日に対応する番号を割り当て
     switch (selectedDay) {
-        case "Monday":
+        case "Mon":
             if (count % 2 === 0) {
                 count = 42;
             } else {
                 count = 43;
             }
             break;
-        case "Tuesday":
+        case "Tue":
             if (count % 2 === 0) {
                 count = 44;
             } else {
                 count = 45;
             }
             break;
-        case "Wednesday":
+        case "Wed":
             if (count % 2 === 0) {
                 count = 46;
             } else {
@@ -368,21 +368,21 @@ function updateDayIndex() {
                 count = 49;
             }
             break;
-        case "Friday":
+        case "Fri":
             if (count % 2 === 0) {
                 count = 50;
             } else {
                 count = 51;
             }
             break;
-        case "Saturday":
+        case "Sat":
             if (count % 2 === 0) {
                 count = 52;
             } else {
                 count = 53;
             }
             break;
-        case "Sunday":
+        case "Sun":
             if (count % 2 === 0) {
                 count = 54;
             } else {
@@ -404,7 +404,7 @@ function updateDayIndex() {
 function updateDropdown() {
     //console.log(count);
     // 曜日を取得
-    var selectedDay = daysOfWeek[mod((count / 2) | 0, 7)];
+    var selectedDay = en_daysOfWeek[mod((count / 2) | 0, 7)];
     // ドロップダウンメニューの選択を更新
     document.getElementById("daySelector").value = selectedDay;
 }
