@@ -64,6 +64,12 @@ const createMap = (topojsonData, stores, stations, station_lines, shopData) => {
 
     // 駅を表示する
     mapping_stations(stations, station_lines, g, projection);
+    analogTime(
+        d3.selectAll("circle.store"),
+        currentTime,
+        currentDayIndex,
+        count
+    );
 
     genre();
 
