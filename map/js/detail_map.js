@@ -1,8 +1,8 @@
 import { mapping_stores_detail } from "./mapping_stores_detail.js";
 import { projection } from "./projection.js";
 
-let detailMap
-let gd
+let detailMap;
+let gd;
 
 // Leaflet マップにカスタムコントロールとしてボタンを追加する関数
 function addBackToD3MapButton(map) {
@@ -18,7 +18,7 @@ function addBackToD3MapButton(map) {
             container.style.backgroundColor = "white";
             container.style.width = "100px";
             container.style.height = "30px";
-            container.innerHTML = "Back to D3";
+            container.innerHTML = "Top Page";
             container.style.textAlign = "center";
             container.style.lineHeight = "30px";
 
@@ -46,8 +46,6 @@ function switchToD3Map() {
 }
 
 function detail_map(click_lon, click_lat, stores) {
-    
-
     // 既存の地図コンテナを取得または新しく作成
     let mapContainer = document.getElementById("map");
     if (!mapContainer) {
@@ -76,8 +74,7 @@ function detail_map(click_lon, click_lat, stores) {
     // D3.js で SVG レイヤーを選択
     var svg = d3.select("#map").select("svg");
 
-
-    gd = svg.append("g")
+    gd = svg.append("g");
 
     // zoomイベントハンドラを作成
     /*const zoomed = (event) => {
@@ -91,14 +88,14 @@ function detail_map(click_lon, click_lat, stores) {
         .translateExtent([
             [0, 0],
             [width, height],
-        ])
-        //.on("zoom", zoomed);
+        ]);
+    //.on("zoom", zoomed);
 
     // SVG要素にzoomイベントハンドラを適用
     //svg.call(zoom);
     mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     // マップがズームまたはドラッグされたときに発生するイベントをリッスン
-    detailMap.on('moveend', function() {
+    detailMap.on("moveend", function () {
         tooltip.transition().duration(500).style("opacity", 0);
         mapping_stores_detail(stores, gd, projection, choice_genres, detailMap);
     });
